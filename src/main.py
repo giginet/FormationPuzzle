@@ -10,15 +10,15 @@ from pywaz.core.game import Game
 from pywaz.scene.abstractscene import Scene
 
 from scene.menu import *
-from scene.main import *
+from scene.game import *
 
 def main():
     pygame.mixer.pre_init(44100, -16, 2, 1024*3)
     pygame.init() # pygameの初期化
     game = Game()
     game.set_caption(u"Kawaz")
-    game.get_scene_manager().set_scenes({'logo':LogoScene(),'main':MainScene(), 'title':TitleScene()})
-    game.get_scene_manager().change_scene('main')
+    game.get_scene_manager().set_scenes({'logo':LogoScene(),'game':GameScene(), 'title':TitleScene()})
+    game.get_scene_manager().change_scene('game')
     return game.mainloop()
 
 if __name__ == '__main__': main()

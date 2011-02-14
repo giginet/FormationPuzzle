@@ -50,14 +50,14 @@ class Animation(Image):
     animation_enable = True
     animation_reverse = False
 
-    def __init__(self, path, ainfo):
+    def __init__(self, path, ainfo, x=0, y=0):
         u"""Constructor of AnimationSprite
 
         Attribute:
             image       - image path of this sprite
             ainfo       - animation info of this sprite
         """
-        super(Animation, self).__init__(path, None)
+        super(Animation, self).__init__(path, None, x=x, y=y)
         self.ainfo = ainfo
         self.rect = pygame.Rect(0, 0, self.ainfo.width, self.ainfo.height)
         self.hit = pygame.Rect(0, 0, self.ainfo.width, self.ainfo.height)

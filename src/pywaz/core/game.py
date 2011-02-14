@@ -12,10 +12,10 @@ from ..scene.manager import SceneManager
 from ..device.key import Key
 
 class Game(Singleton):
-    _screen = Window(caption=u"Hello,Kawaz!")
     _clock = pygame.time.Clock()
     _scene_manager = SceneManager()
-    
+    _screen = Window(width=800, height=640, caption=u"Hello,Kawaz!")
+        
     @classmethod
     def get_screen(cls):
         return cls._screen.window

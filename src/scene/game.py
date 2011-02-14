@@ -3,6 +3,8 @@
 #    Created on 2011/02/14
 #    Created by giginet
 #
+import settings
+
 from pywaz.scene.abstractscene import Scene
 from pywaz.core.game import Game
 from pywaz.sprite.image import Image
@@ -11,12 +13,17 @@ from pywaz.utils.vector import Vector
 from pywaz.utils.timer import Timer
 from pywaz.device.mouse import Mouse
 
-class MainScene(Scene):
+from main.panel import Panel
+from main.stage import Stage
+
+class GameScene(Scene):
     def ready(self):
-        i = Image(u"../resources/image/main/panel/panel.png", x=100, y=100)
-        i.center = Vector(0,0)
-        self.sprites.append(i)
+        panels = []
+        for i in xrange(settings.STAGE_WIDTH*settings.STAGE_HEIGHT):
+            p = Panel(i%settings.STAGE_WIDTH,int(i/settings.STAGE_WIDTH))
+            self.sprites.append(p)
         
     def act(self):
-        for kawaz in self.sprites:
-            kawaz.angle +=1
+        pass
+        #for kawaz in self.sprites:
+        #    kawaz.angle +=1
