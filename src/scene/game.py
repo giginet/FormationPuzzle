@@ -13,17 +13,15 @@ from pywaz.utils.vector import Vector
 from pywaz.utils.timer import Timer
 from pywaz.device.mouse import Mouse
 
-from main.panel import Panel
 from main.stage import Stage
 
 class GameScene(Scene):
     def ready(self):
-        panels = []
-        for i in xrange(settings.STAGE_WIDTH*settings.STAGE_HEIGHT):
-            p = Panel(i%settings.STAGE_WIDTH,int(i/settings.STAGE_WIDTH))
-            self.sprites.append(p)
+        self.stage = Stage()
         
     def act(self):
         pass
-        #for kawaz in self.sprites:
-        #    kawaz.angle +=1
+    
+    def render(self):
+        super(GameScene, self).render()
+        self.stage.render()
