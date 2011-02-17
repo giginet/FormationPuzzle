@@ -7,6 +7,11 @@ class LocalPoint(Vector):
         gx = settings.STAGE_OFFSET[0]+self.x*settings.PANELSIZE
         gy = settings.STAGE_OFFSET[1]+self.y*settings.PANELSIZE
         return Vector(gx,gy)
+    def __add__(self, p):
+        x = self.x + p.x
+        y = self.y + p.y
+        return LocalPoint(x,y)
+
 
 def local_to_global(tuple):
     lx, ly = tuple

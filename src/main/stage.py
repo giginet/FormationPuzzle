@@ -27,6 +27,7 @@ class Stage(Singleton):
                     owner = 1
                 column.append(Panel(x, y, owner))
             self._map.append(column)
+        self._map = map(list, zip(*self._map))
         
     def act(self):
         for player in self.players:

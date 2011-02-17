@@ -19,6 +19,10 @@ class Timer(object):
         self._max = m
     
     @property
+    def max(self):
+        return self._max
+    
+    @property
     def now(self):
         return self._time
     

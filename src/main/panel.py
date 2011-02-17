@@ -13,8 +13,7 @@ from pywaz.utils.timer import Timer
 
 from main.utils import LocalPoint
 
-class Panel(Animation):
-    animation_enable = False
+class Panel(Image):
     disable = False
     
     def __init__(self, x=0, y=0, owner=0):
@@ -22,11 +21,9 @@ class Panel(Animation):
             x,y: マップ上の相対座標
         """
         self.point = LocalPoint(x,y)
-        super(Panel,self).__init__("../resources/image/main/panel/panels.png",AnimationInfo(0,0,4,20,20,0),x=x*settings.PANELSIZE+settings.STAGE_OFFSET[0], y=y*settings.PANELSIZE+settings.STAGE_OFFSET[1])
         self.color = random.randint(0,3)
-        self.owner = owner
-        self.ainfo.index = owner
-        self.ainfo.frame = self.color
+        self.owner = owner 
+        super(Panel,self).__init__("../resources/image/main/panel/panel%d_%d.png" % (owner, self.color), x=x*settings.PANELSIZE+settings.STAGE_OFFSET[0], y=y*settings.PANELSIZE+settings.STAGE_OFFSET[1])
         
     def render(self):
         super(Panel, self).render()
@@ -39,7 +36,7 @@ class PanelSet(object):
         """
         self.degree = degree
         self.panels = panels
-        self.timer = Timer(6)
+        self.timer = Timer(10)
         panels[0].center = Vector(settings.PANELSIZE,settings.PANELSIZE)
         panels[1].center = Vector(0, settings.PANELSIZE)
         panels[2].center = Vector(0,0)
@@ -50,7 +47,7 @@ class PanelSet(object):
         self.timer.tick()
         if not self.timer.is_over():
             for panel in self.panels:
-                panel.angle = self.timer.now*self.degree
+                panel.angle = self.timer.now*90/self.timer.max*self.degree
         else:
             for panel in self.panels:
                 panel.angle = 90*self.degree
