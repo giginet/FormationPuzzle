@@ -25,9 +25,9 @@ class Mouse(Singleton):
         return pygame.mouse.get_pos()
     
     @staticmethod
-    def show_cursol():
+    def show_cursor():
         pygame.mouse.set_visible(True)
         
     @staticmethod
-    def hide_cursol():
+    def hide_cursor():
         pygame.mouse.set_visible(False)

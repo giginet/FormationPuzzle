@@ -20,7 +20,7 @@ class Image(pygame.sprite.Sprite):
             area        - represents a smaller portion of the source to draw
         """
         super(Image, self).__init__()
-        self.image = pygame.image.load(filepath).convert()
+        self.image = pygame.image.load(filepath).convert_alpha()
         self.rect = self.image.get_rect()
         self.area = area
         self.hit = pygame.Rect(0, 0, self.rect.w, self.rect.h)

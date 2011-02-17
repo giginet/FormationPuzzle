@@ -20,7 +20,7 @@ class GameScene(Scene):
         self.stage = Stage()
         
     def act(self):
-        pass
+        self.stage.act()
     
     def render(self):
         super(GameScene, self).render()
