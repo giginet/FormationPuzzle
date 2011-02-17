@@ -27,7 +27,7 @@ class Stage(Singleton):
                     owner = 1
                 column.append(Panel(x, y, owner))
             self._map.append(column)
-        self._map = map(list, zip(*self._map))
+        self._map = map(list, zip(*self._map)) #transpose matrix
         
     def act(self):
         for player in self.players:
@@ -36,7 +36,12 @@ class Stage(Singleton):
             if press:
                 lp = player.get_local_point()
                 panels = (self.get_panel(lp),self.get_panel(lp+LocalPoint(1,0)),self.get_panel(lp+LocalPoint(1,1)),self.get_panel(lp+LocalPoint(0,1)))
-                self.panelsets.append(PanelSet(panels, press))        
+                if self.can_rotation(panels):
+                    self.panelsets.append(PanelSet(panels, press))
+        for i,ps in enumerate(self.panelsets):
+            if ps.is_over():
+                self.rotate(ps.panels, ps.degree)
+                del self.panelsets[i]
         map(lambda panelset: panelset.act(),self.panelsets)
                 
     def render(self):
@@ -46,3 +51,27 @@ class Stage(Singleton):
         
     def get_panel(self, lp):
         return self._map[lp.x][lp.y]
+    
+    def swap(self, a, b):
+        tmp = a.point.clone()
+        self._map[a.point.x][a.point.y] = b
+        self._map[b.point.x][b.point.y] = a
+        a.point = b.point
+        b.point = tmp
+        
+    def rotate(self, panels, degree):
+        if degree == 1:
+            self.swap(panels[0], panels[3])
+            self.swap(panels[3], panels[2])
+            self.swap(panels[2], panels[1])
+        else:
+            self.swap(panels[0], panels[1])
+            self.swap(panels[1], panels[2])
+            self.swap(panels[2], panels[3])
+        for panel in panels: panel.angle = 0
+    
+    def can_rotation(self, panels):
+        for panel in panels:
+            if panel.rotation:
+                return False
+        return True

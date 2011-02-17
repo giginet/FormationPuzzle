@@ -44,7 +44,10 @@ class Image(pygame.sprite.Sprite):
             radius = (srcc-center).length
             from math import atan2 
             theta = atan2(srcc.y-center.y,center.x-srcc.x) + radians(self.angle)
-            dest = (Vector(self.x, self.y)-(Vector(image.get_size())*0.5 + Vector(cos(theta),-sin(theta))*radius)).to_pos()
+            dest = (Vector(self.x, self.y)-(Vector(image.get_size())*0.5 + Vector(cos(theta),-sin(theta))*radius))
+            dest.x += center.x
+            dest.y += center.y
+            dest = dest.to_pos()
         else:
             image = self.image
         return image, dest

@@ -15,6 +15,7 @@ from main.utils import LocalPoint
 
 class Panel(Image):
     disable = False
+    rotation = False
     
     def __init__(self, x=0, y=0, owner=0):
         u"""
@@ -26,7 +27,12 @@ class Panel(Image):
         super(Panel,self).__init__("../resources/image/main/panel/panel%d_%d.png" % (owner, self.color), x=x*settings.PANELSIZE+settings.STAGE_OFFSET[0], y=y*settings.PANELSIZE+settings.STAGE_OFFSET[1])
         
     def render(self):
+        self.x = self.point.x*settings.PANELSIZE+settings.STAGE_OFFSET[0]
+        self.y = self.point.y*settings.PANELSIZE+settings.STAGE_OFFSET[1]
         super(Panel, self).render()
+        
+    def get_point(self):
+        return self.point
         
 class PanelSet(object):
     def __init__(self, panels, degree=0):
@@ -47,7 +53,11 @@ class PanelSet(object):
         self.timer.tick()
         if not self.timer.is_over():
             for panel in self.panels:
+                panel.rotation = True
                 panel.angle = self.timer.now*90/self.timer.max*self.degree
         else:
             for panel in self.panels:
-                panel.angle = 90*self.degree
+                panel.rotation = False
+                
+    def is_over(self):
+        return self.timer.is_over()
