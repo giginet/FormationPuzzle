@@ -17,11 +17,11 @@ class Panel(Animation):
         u"""
             x,y: マップ上の相対座標
         """
-        super(Panel,self).__init__("../resources/image/main/panel/panels.png",AnimationInfo(0,0,4,20,20,0),x=x*settings.PANELSIZE, y=y*settings.PANELSIZE)
+        super(Panel,self).__init__("../resources/image/main/panel/panels.png",AnimationInfo(0,0,4,20,20,0),x=x*settings.PANELSIZE+settings.STAGE_OFFSET[0], y=y*settings.PANELSIZE+settings.STAGE_OFFSET[1])
         self.color = random.randint(0,3)
         self.owner = owner
         self.ainfo.index = owner
         self.ainfo.frame = self.color
         
-    def render(self, offset=(0,0)):
+    def render(self):
         super(Panel, self).render()

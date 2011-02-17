@@ -19,10 +19,10 @@ class Vector(object):
             self.set(args[0][0], args[0][1])
         else: 
             self.set(args[0], args[1])
-        
+    def __str__(self):
+        return "(%f, %f)" % (self.x, self.y)
     def __unicode__(self):
         return u"(%f, %f)" % (self.x, self.y)
-    
     @require_vector
     def __lt__(self, v): return self.length < v.length
     @require_vector
@@ -38,15 +38,21 @@ class Vector(object):
     def add(self, v):
         self.x += v.x
         self.y += v.y
-        return self
-    def __add__(self, v): return self.add(v)    
-    
+        return self 
+    def __add__(self, v): 
+        x = self.x + v.x
+        y = self.y + v.y
+        return Vector(x,y)
+        
     @require_vector
     def sub(self, v):
         self.x -= v.x
         self.y -= v.y
         return self
-    def __sub__(self, v): return self.sub(v)    
+    def __sub__(self, v): 
+        x = self.x - v.x
+        y = self.y - v.y
+        return Vector(x,y)
     
     def mul(self, v):
         import numbers
@@ -55,13 +61,24 @@ class Vector(object):
         elif isinstance(v, numbers.Number):
             return self.scale(v)
         raise TypeError
-    def __mul__(self, v): return self.mul(v)    
+    def __mul__(self, *args): 
+        import numbers
+        if isinstance(args[0], Vector):
+            return self.scalar_product(args[0])
+        elif isinstance(args[0], numbers.Number):
+            x = self.x*args[0]
+            y = self.y*args[0]
+            return Vector(x,y)
+        raise TypeError
     
     def div(self, n):
         self.x /= n
         self.y /= n
         return self
-    def __div__(self, n): return self.div(n)    
+    def __div__(self, n): 
+        x = self.x/n
+        y = self.y/n
+        return Vector(x,y)
     
     def scale(self, n):
         u"""ベクトルをスカラ倍する"""
@@ -71,8 +88,8 @@ class Vector(object):
     
     @require_vector    
     def scalar_product(self, v):
-        u"""ベクトルの外積を取る"""
-        return v.x+self.x+v.y*self.y
+        u"""ベクトルの外積を取る（そのうち3次元に拡張）"""
+        return Vector(0,0)
     
     def set(self, x, y):
         u"""ベクトルに指定の値をセットする"""

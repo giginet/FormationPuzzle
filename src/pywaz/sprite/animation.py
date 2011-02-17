@@ -8,6 +8,7 @@ import pygame
 from ..sprite.image import Image
 from ..core.game import Game
 from ..utils.timer import Timer
+from ..utils.vector import Vector
 
 class AnimationInfo(object):
     u"""Animation Info"""
@@ -57,8 +58,9 @@ class Animation(Image):
             image       - image path of this sprite
             ainfo       - animation info of this sprite
         """
-        super(Animation, self).__init__(path, None, x=x, y=y)
+        super(Animation, self).__init__(path, None,x=x,y=y)
         self.ainfo = ainfo
+        self.center = Vector(self.ainfo.frame*self.ainfo.width, self.ainfo.index*self.ainfo.height)+Vector(self.ainfo.width, self.ainfo.height)*0.5
         self.rect = pygame.Rect(0, 0, self.ainfo.width, self.ainfo.height)
         self.hit = pygame.Rect(0, 0, self.ainfo.width, self.ainfo.height)
         self.animation_wait = Timer(ainfo.apf) 
@@ -100,3 +102,6 @@ class Animation(Image):
     
     def is_over(self):
         return self.ainfo.frame == self.ainfo.max_frame - 1
+    
+    def _rotate(self, dest):
+        return self.image, dest

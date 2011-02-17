@@ -7,8 +7,11 @@ import settings
 
 from pywaz.utils.singleton import Singleton
 from main.panel import Panel
+from pywaz.sprite.image import Image
 
 class Stage(Singleton):
+    frame = Image(u'../resources/image/main/frame.png', x=settings.STAGE_OFFSET[0]-15, y=settings.STAGE_OFFSET[1]-15)
+    
     def __init__(self):
         self._map = []
         for y in xrange(settings.STAGE_HEIGHT):
@@ -24,7 +27,8 @@ class Stage(Singleton):
         pass
     
     def render(self):
-        map((lambda column: map((lambda panel: panel.render(settings.STAGE_OFFSET)),column)), self._map)
+        self.frame.render()
+        map((lambda column: map((lambda panel: panel.render()),column)), self._map)
         
     def get_panel(self, x, y):
         return self._map[x][y]
