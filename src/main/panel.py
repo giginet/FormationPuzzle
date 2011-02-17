@@ -22,3 +22,6 @@ class Panel(Animation):
         self.owner = owner
         self.ainfo.index = owner
         self.ainfo.frame = self.color
+        
+    def render(self, offset=(0,0)):
+        super(Panel, self).render()

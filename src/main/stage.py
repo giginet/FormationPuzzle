@@ -24,7 +24,7 @@ class Stage(Singleton):
         pass
     
     def render(self):
-        map((lambda column: map((lambda panel: panel.render()),column)), self._map)
+        map((lambda column: map((lambda panel: panel.render(settings.STAGE_OFFSET)),column)), self._map)
         
     def get_panel(self, x, y):
         return self._map[x][y]
