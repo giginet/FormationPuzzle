@@ -16,6 +16,7 @@ from main.utils import LocalPoint
 class Panel(Image):
     disable = False
     rotation = False
+    unit = False
     
     def __init__(self, x=0, y=0, owner=0):
         u"""
@@ -33,6 +34,12 @@ class Panel(Image):
         
     def get_point(self):
         return self.point
+    
+    def can_unit(self):
+        return not self.rotation and not self.disable and not self.unit
+    
+    def can_rotate(self):
+        return not self.rotation
         
 class PanelSet(object):
     def __init__(self, panels, degree=0):
@@ -42,7 +49,7 @@ class PanelSet(object):
         """
         self.degree = degree
         self.panels = panels
-        self.timer = Timer(10)
+        self.timer = Timer(6)
         panels[0].center = Vector(settings.PANELSIZE,settings.PANELSIZE)
         panels[1].center = Vector(0, settings.PANELSIZE)
         panels[2].center = Vector(0,0)
@@ -55,9 +62,6 @@ class PanelSet(object):
             for panel in self.panels:
                 panel.rotation = True
                 panel.angle = self.timer.now*90/self.timer.max*self.degree
-        else:
-            for panel in self.panels:
-                panel.rotation = False
                 
     def is_over(self):
         return self.timer.is_over()

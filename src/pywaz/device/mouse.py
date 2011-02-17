@@ -31,3 +31,10 @@ class Mouse(Singleton):
     @staticmethod
     def hide_cursor():
         pygame.mouse.set_visible(False)
+        
+    @staticmethod
+    def is_release(self):
+        for i in xrange(3):
+            if pygame.mouse.get_pressed()[i]:
+                return False
+        return True

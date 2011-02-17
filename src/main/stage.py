@@ -12,11 +12,14 @@ from main.player import Player
 from main.panel import Panel, PanelSet
 
 from main.utils import LocalPoint
+from main.unit.attack import Attack
 
 class Stage(Singleton):
     frame = Image(u'../resources/image/main/frame.png', x=settings.STAGE_OFFSET[0]-15, y=settings.STAGE_OFFSET[1]-15)
     players = [Player(0)]
     panelsets = [] #回転中のPanelSet
+    units = []
+    
     def __init__(self):
         self._map = []
         for y in xrange(settings.STAGE_HEIGHT):
@@ -41,6 +44,8 @@ class Stage(Singleton):
         for i,ps in enumerate(self.panelsets):
             if ps.is_over():
                 self.rotate(ps.panels, ps.degree)
+                for panel in ps.panels: panel.rotation = False
+                self.check()
                 del self.panelsets[i]
         map(lambda panelset: panelset.act(),self.panelsets)
                 
@@ -48,12 +53,15 @@ class Stage(Singleton):
         self.frame.render()
         map((lambda column: map((lambda panel: panel.render()),column)), self._map)
         map(lambda p:p.render(),self.players)
+        map(lambda u:u.render(),self.units)
         
     def get_panel(self, lp):
-        return self._map[lp.x][lp.y]
-    
+        if 0 <= lp.x < settings.STAGE_WIDTH and 0<= lp.y < settings.STAGE_HEIGHT:
+            return self._map[lp.x][lp.y]
+        return DummyPanel(lp.x,lp.y)
+        
     def swap(self, a, b):
-        tmp = a.point.clone()
+        tmp = a.point
         self._map[a.point.x][a.point.y] = b
         self._map[b.point.x][b.point.y] = a
         a.point = b.point
@@ -71,7 +79,20 @@ class Stage(Singleton):
         for panel in panels: panel.angle = 0
     
     def can_rotation(self, panels):
+        owner = panels[0].owner
         for panel in panels:
-            if panel.rotation:
+            if not panel.can_rotate():
+                return False
+            if panel.owner != owner:
                 return False
         return True
+    
+    def check(self):
+        for x in xrange(settings.STAGE_WIDTH):
+            for y in xrange(settings.STAGE_HEIGHT):
+                unit = Attack.generate(self._map[x][y], self)
+                if unit: self.units.append(unit)
+                
+class DummyPanel(Panel):
+    def can_unit(self): return False
+    def can_rotate(self): return False
