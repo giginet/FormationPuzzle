@@ -21,6 +21,16 @@ class Player(Animation):
         
     def act(self):
         self.x, self.y = map((lambda x: x-settings.PANELSIZE),(global_to_local(Mouse.get_pos()).add(LocalPoint(1,1))).to_global().to_pos())
+        
+    def poll(self):
+        if Mouse.is_press('LEFT'):
+            return 1
+        elif Mouse.is_press('RIGHT'):
+            return -1
+        return 0
+    
+    def get_local_point(self):
+        return global_to_local(Mouse.get_pos())
 
 class NPC(Animation):
     pass

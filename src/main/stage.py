@@ -9,12 +9,14 @@ from pywaz.utils.singleton import Singleton
 from pywaz.sprite.image import Image
 
 from main.player import Player
-from main.panel import Panel
+from main.panel import Panel, PanelSet
+
+from main.utils import LocalPoint
 
 class Stage(Singleton):
     frame = Image(u'../resources/image/main/frame.png', x=settings.STAGE_OFFSET[0]-15, y=settings.STAGE_OFFSET[1]-15)
-    players = [Player(0), Player(1)]
-    
+    players = [Player(0)]
+    panelsets = [] #回転中のPanelSet
     def __init__(self):
         self._map = []
         for y in xrange(settings.STAGE_HEIGHT):
@@ -27,12 +29,19 @@ class Stage(Singleton):
             self._map.append(column)
         
     def act(self):
-        self.players[0].act()
-    
+        for player in self.players:
+            player.act()
+            press = player.poll()
+            if press:
+                lp = player.get_local_point()
+                panels = (self.get_panel(lp),self.get_panel(lp+LocalPoint(1,0)),self.get_panel(lp+LocalPoint(1,1)),self.get_panel(lp+LocalPoint(0,1)))
+                self.panelsets.append(PanelSet(panels, press))        
+        map(lambda panelset: panelset.act(),self.panelsets)
+                
     def render(self):
         self.frame.render()
         map((lambda column: map((lambda panel: panel.render()),column)), self._map)
-        self.players[0].render()
+        map(lambda p:p.render(),self.players)
         
-    def get_panel(self, x, y):
-        return self._map[x][y]
+    def get_panel(self, lp):
+        return self._map[lp.x][lp.y]
