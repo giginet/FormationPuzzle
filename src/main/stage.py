@@ -51,6 +51,7 @@ class Stage(Singleton):
         map(lambda panelset: panelset.act(),self.panelsets)
         for unit in self.units:
             self.move_unit(unit, LocalPoint(0,-1))
+            self.units = []
                 
     def render(self):
         self.frame.render()
@@ -83,24 +84,35 @@ class Stage(Singleton):
     
     def move_unit(self, unit, vector):
         outdated = []
+        nexts = []
+        updates = []
         for panel in unit.panels:
             next = self.get_panel(panel.point+vector)
             if not next.can_through() and not unit.has(next): return
         for panel in unit.panels:
             next = self.get_panel(panel.point+vector)
-            if not next.unit: outdated.append(next)
-            #self._map[panel.point.x][panel.point.y] = DummyPanel(panel.point.x, panel.point.x)
-            panel.point = next.point
-            self._map[panel.point.x][panel.point.y] = panel
+            updates.append((panel, panel.point+vector))
+            nexts.append(panel.point+vector)
+            self._map[panel.point.x][panel.point.y] = DummyPanel(panel.point.x, panel.point.x)
+        for tuple in updates:
+            panel = tuple[0]
+            next = self.get_panel(tuple[1]) 
+            self._map[tuple[1].x][tuple[1].y] = panel
+            panel.point = tuple[1]
+        for point in nexts:
+            next = self.get_panel(point+vector)
+            if not next.unit:
+                outdated.append(next)
+        for o in outdated: print o.point
         for panel in outdated:
-            reverse = vector.reverse()
+            reverse = vector.clone().reverse()
             current = panel.point+reverse
             back = self.get_panel(current)
             while back.unit:
                 current = current + reverse
                 back = self.get_panel(current)
+            panel.point = current.clone()
             self._map[current.x][current.y] = panel
-                
             
     def can_rotation(self, panels):
         owner = panels[0].owner

@@ -34,6 +34,7 @@ class Panel(Image):
     def can_unit(self): return not self.rotation and not self.disable and not self.unit
     def can_rotate(self): return not self.rotation and not self.unit
     def can_through(self): return not self.unit and not self.rotation
+    def is_dummy(self): return False
 class PanelSet(object):
     def __init__(self, panels, degree=0):
         u"""
@@ -58,6 +59,9 @@ class PanelSet(object):
         return self.timer.is_over()
 class DummyPanel(Panel):
     disable = True
+    unit = False
     def can_unit(self): return False
     def can_rotate(self): return False
     def can_through(self): return False
+    def render(self): pass
+    def is_dummy(self): return True
