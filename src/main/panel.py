@@ -23,16 +23,22 @@ class Panel(Image):
         """
         self.point = LocalPoint(x,y)
         self.color = random.randint(0,3)
-        self.owner = owner 
+        self.owner = owner
+        self.disable_timer = Timer(120)
         super(Panel,self).__init__("../resources/image/main/panel/panel%d_%d.png" % (owner, self.color), x=x*settings.PANELSIZE+settings.STAGE_OFFSET[0], y=y*settings.PANELSIZE+settings.STAGE_OFFSET[1])
     def __eq__(self, p): return self.point == p.point
     def render(self):
         self.x = self.point.x*settings.PANELSIZE+settings.STAGE_OFFSET[0]
         self.y = self.point.y*settings.PANELSIZE+settings.STAGE_OFFSET[1]
         super(Panel, self).render()
+    def act(self):
+        if self.disable:
+            self.disable_timer.tick()
+            if self.disable_timer.is_over():
+                self.set_disable(False)
     def get_point(self): return self.point
     def can_unit(self): return not self.rotation and not self.disable and not self.unit
-    def can_rotate(self): return not self.rotation and not self.unit
+    def can_rotate(self): return not self.rotation
     def can_through(self): return not self.unit and not self.rotation
     def is_dummy(self): return False
     def change_owner(self, owner):
@@ -44,7 +50,15 @@ class Panel(Image):
         if not self.color == color:
             self.color = color
             self.change_image("../resources/image/main/panel/panel%d_%d.png" % (self.owner, self.color))
-        
+    def set_disable(self, disable):
+        if not self.disable == disable:
+            self.disable = disable
+            if disable:
+                self.disable_timer.stop()
+                self.change_image(u"../resources/image/main/panel/gray.png")
+            else:
+                self.disable_timer.play()
+                self.change_image(u"../resources/image/main/panel/panel%d_%d.png" % (self.owner, self.color)) 
 class PanelSet(object):
     def __init__(self, panels, degree=0):
         u"""

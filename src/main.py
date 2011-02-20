@@ -6,6 +6,8 @@
 import pygame
 from pygame.locals import *
 
+import settings
+
 from pywaz.core.game import Game
 from pywaz.scene.abstractscene import Scene
 
@@ -18,7 +20,10 @@ def main():
     game = Game()
     game.set_caption(u"Kawaz")
     game.get_scene_manager().set_scenes({'logo':LogoScene(),'game':GameScene(), 'title':TitleScene()})
-    game.get_scene_manager().change_scene('game')
+    if settings.DEBUG:
+        game.get_scene_manager().change_scene('game')
+    else:
+        game.get_scene_manager().change_scene('logo')
     return game.mainloop()
 
 if __name__ == '__main__': main()

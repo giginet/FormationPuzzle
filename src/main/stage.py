@@ -39,6 +39,10 @@ class Stage(Singleton):
             if press:
                 lp = player.get_local_point()
                 panels = (self.get_panel(lp),self.get_panel(lp+LocalPoint(1,0)),self.get_panel(lp+LocalPoint(1,1)),self.get_panel(lp+LocalPoint(0,1)))
+                for p in panels:
+                    if p.unit:
+                        self.unitmng.remove(self.unitmng.get_unit_by_panel(p))
+                        break
                 if self.can_rotation(panels):
                     self.panelsets.append(PanelSet(panels, press))
         for i,ps in enumerate(self.panelsets):

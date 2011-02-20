@@ -63,6 +63,8 @@ class UnitManager(Singleton):
             for y in xrange(lp.y-2,lp.y+2):
                 unit.append(Sweep.generate(self.stage.get_panel(LocalPoint(x,y)), self.stage))
                 unit.append(Attack.generate(self.stage.get_panel(LocalPoint(x,y)), self.stage))
+        for x in xrange(lp.x-2,lp.x+2):
+            for y in xrange(lp.y-2,lp.y+2):
                 unit.append(Guard.generate(self.stage.get_panel(LocalPoint(x,y)), self.stage))
                 unit.append(Bomb.generate(self.stage.get_panel(LocalPoint(x,y)), self.stage))
         u2 = []

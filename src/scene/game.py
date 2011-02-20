@@ -20,7 +20,7 @@ class GameScene(Scene):
         self.stage = Stage()
         self.background = Image(u'../resources/image/main/background.png')
         self.bgm = BGM(u'../resources/bgm/main.mp3')
-        #self.bgm.play()
+        self.bgm.play()
         self.sprites.append(self.background)
         
     def act(self):
