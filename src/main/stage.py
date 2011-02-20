@@ -71,8 +71,8 @@ class Stage(Singleton):
     def render(self):
         self.frame.render()
         map((lambda column: map((lambda panel: panel.render()),column)), self._map)
-        map(lambda p:p.render(),self.players)
         map(lambda u:u.render(),self.unitmng.units)
+        map(lambda p:p.render(),self.players)
         
     def get_panel(self, lp):
         if 0 <= lp.x < settings.STAGE_WIDTH and 0<= lp.y < settings.STAGE_HEIGHT:

@@ -8,6 +8,7 @@ from pygame.locals import *
 from ..utils.singleton import Singleton
 
 class Mouse(Singleton):
+    show = True
     
     def __init__(self):
         raise NotImplementedError
@@ -24,13 +25,17 @@ class Mouse(Singleton):
     def get_pos():
         return pygame.mouse.get_pos()
     
-    @staticmethod
-    def show_cursor():
-        pygame.mouse.set_visible(True)
+    @classmethod
+    def show_cursor(cls):
+        if not cls.show:
+            pygame.mouse.set_visible(True)
+            cls.show = True
         
-    @staticmethod
-    def hide_cursor():
-        pygame.mouse.set_visible(False)
+    @classmethod
+    def hide_cursor(cls):
+        if cls.show:
+            pygame.mouse.set_visible(False)
+            cls.show = False
         
     @staticmethod
     def is_release(self):
