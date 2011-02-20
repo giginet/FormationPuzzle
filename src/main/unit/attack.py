@@ -15,5 +15,6 @@ class Attack(Unit):
         point =panel.point
         panels = [panel, stage.get_panel(point+LocalPoint(1,0)),stage.get_panel(point+LocalPoint(-1,0)),stage.get_panel(point+LocalPoint(0,1)),stage.get_panel(point+LocalPoint(0,-1))]
         if cls.check(panels):
+            for panel in panels: panel.unit = True
             return Attack(panels)
         return None

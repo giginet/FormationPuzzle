@@ -14,7 +14,7 @@ from ..device.key import Key
 class Game(Singleton):
     _clock = pygame.time.Clock()
     _scene_manager = SceneManager()
-    _screen = Window(width=800, height=640, caption=u"Hello,Kawaz!")
+    _screen = Window(width=800, height=600, caption=u"Hello,Kawaz!")
         
     @classmethod
     def get_screen(cls):

@@ -9,7 +9,7 @@ from pywaz.utils.singleton import Singleton
 from pywaz.sprite.image import Image
 
 from main.player import Player
-from main.panel import Panel, PanelSet
+from main.panel import Panel, PanelSet, DummyPanel
 
 from main.utils import LocalPoint
 from main.unit.attack import Attack
@@ -44,10 +44,13 @@ class Stage(Singleton):
         for i,ps in enumerate(self.panelsets):
             if ps.is_over():
                 self.rotate(ps.panels, ps.degree)
-                for panel in ps.panels: panel.rotation = False
-                self.check()
+                for panel in ps.panels: 
+                    panel.rotation = False
+                    self.check(panel)
                 del self.panelsets[i]
         map(lambda panelset: panelset.act(),self.panelsets)
+        for unit in self.units:
+            self.move_unit(unit, LocalPoint(0,-1))
                 
     def render(self):
         self.frame.render()
@@ -78,21 +81,37 @@ class Stage(Singleton):
             self.swap(panels[2], panels[3])
         for panel in panels: panel.angle = 0
     
+    def move_unit(self, unit, vector):
+        outdated = []
+        for panel in unit.panels:
+            next = self.get_panel(panel.point+vector)
+            if not next.can_through() and not unit.has(next): return
+        for panel in unit.panels:
+            next = self.get_panel(panel.point+vector)
+            if not next.unit: outdated.append(next)
+            #self._map[panel.point.x][panel.point.y] = DummyPanel(panel.point.x, panel.point.x)
+            panel.point = next.point
+            self._map[panel.point.x][panel.point.y] = panel
+        for panel in outdated:
+            reverse = vector.reverse()
+            current = panel.point+reverse
+            back = self.get_panel(current)
+            while back.unit:
+                current = current + reverse
+                back = self.get_panel(current)
+            self._map[current.x][current.y] = panel
+                
+            
     def can_rotation(self, panels):
         owner = panels[0].owner
         for panel in panels:
-            if not panel.can_rotate():
-                return False
-            if panel.owner != owner:
-                return False
+            if not panel.can_rotate(): return False
+            if panel.owner != owner: return False
         return True
     
-    def check(self):
-        for x in xrange(settings.STAGE_WIDTH):
-            for y in xrange(settings.STAGE_HEIGHT):
-                unit = Attack.generate(self._map[x][y], self)
+    def check(self, panel):
+        lp = panel.point
+        for x in xrange(lp.x-2,lp.x+2):
+            for y in xrange(lp.y-2,lp.y+2):
+                unit = Attack.generate(self.get_panel(LocalPoint(x,y)), self)
                 if unit: self.units.append(unit)
-                
-class DummyPanel(Panel):
-    def can_unit(self): return False
-    def can_rotate(self): return False

@@ -11,6 +11,8 @@ class LocalPoint(Vector):
         x = self.x + p.x
         y = self.y + p.y
         return LocalPoint(x,y)
+    def clone(self):
+        return LocalPoint(self.x,self.y)
 
 
 def local_to_global(tuple):

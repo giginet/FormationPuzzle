@@ -29,3 +29,16 @@ class Unit(object):
     def render(self):
         self.image.x, self.image.y = (self.panels[0].point + LocalPoint(self.offset)).to_global().to_pos()
         self.image.render()
+        
+    def get_front(self, vector):
+        x, y = vector.to_pos()
+        if x is 0 and y is -1:
+            return self.panels.sort(cmp=lambda x, y: cmp(x.y,y.y))[0]
+        elif x is 1 and y is 0:
+            return self.panels.sort(cmp=lambda x, y: cmp(x.x,y.x), reverse=True)[0]
+        elif x is 0 and y is 1:
+            return self.panels.sort(cmp=lambda x, y: cmp(x.y,y.y), reverse=True)[0]
+        elif x is -1 and y is 0:
+            return self.panels.sort(cmp=lambda x, y: cmp(x.x,y.x))[0] 
+        
+    def has(self, panel): return panel in self.panels
