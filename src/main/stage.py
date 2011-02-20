@@ -13,15 +13,16 @@ from main.panel import Panel, PanelSet, DummyPanel
 
 from main.utils import LocalPoint
 from main.unit.attack import Attack
+from main.unitmanager import UnitManager
 
 class Stage(Singleton):
     frame = Image(u'../resources/image/main/frame.png', x=settings.STAGE_OFFSET[0]-15, y=settings.STAGE_OFFSET[1]-15)
     players = [Player(0)]
     panelsets = [] #回転中のPanelSet
-    units = []
     
     def __init__(self):
         self._map = []
+        self.unitmng = UnitManager(self)
         for y in xrange(settings.STAGE_HEIGHT):
             column = []
             for x in xrange(settings.STAGE_WIDTH):
@@ -49,27 +50,31 @@ class Stage(Singleton):
                     self.check(panel)
                 del self.panelsets[i]
         map(lambda panelset: panelset.act(),self.panelsets)
-        for unit in self.units:
+        for unit in self.unitmng.units:
             res = unit.act()
             if res == -1:
                 unit.disappear()
-                del self.units[self.units.index(unit)]
+                self.unitmng.remove(unit)
             elif res:
                 vector = LocalPoint(0,-1+2*unit.owner)
-                hits = []
+                enemies = []
+                hit = False
                 for panel in unit.panels:
                     next = self.get_panel(panel.point+vector)
-                    if not next.can_through() and not unit.has(next): hits.append(next)
-                if hits:
-                    pass
-                else:
-                    self.move_unit(unit, vector)
-    
+                    if not next.can_through() and not unit.has(next):
+                        hit = True
+                        neighbor_unit = self.unitmng.get_unit_by_panel(next) 
+                        if not next.is_dummy() and neighbor_unit and not neighbor_unit in enemies and not neighbor_unit.owner == unit.owner:
+                            enemies.append(neighbor_unit)
+                if enemies:
+                    map(lambda enemy: self.unitmng.battle(unit, enemy), enemies)
+                elif not hit:
+                    self.unitmng.move_unit(unit, vector)
     def render(self):
         self.frame.render()
         map((lambda column: map((lambda panel: panel.render()),column)), self._map)
         map(lambda p:p.render(),self.players)
-        map(lambda u:u.render(),self.units)
+        map(lambda u:u.render(),self.unitmng.units)
         
     def get_panel(self, lp):
         if 0 <= lp.x < settings.STAGE_WIDTH and 0<= lp.y < settings.STAGE_HEIGHT:
@@ -94,40 +99,6 @@ class Stage(Singleton):
             self.swap(panels[2], panels[3])
         for panel in panels: panel.angle = 0
     
-    def move_unit(self, unit, vector):
-        u"""unitをvectorの方向に移動させる"""
-        updates = []
-        outdates = []
-        for panel in unit.panels:
-            next = self.get_panel(panel.point+vector)
-            if not next.unit: outdates.append(next)
-        for panel in unit.panels:
-            updates.append((panel, panel.point+vector))
-            self._map[panel.point.x][panel.point.y] = DummyPanel(panel.point.x, panel.point.y)
-        for tuple in updates:
-            panel = tuple[0]
-            to = tuple[1]
-            self._map[to.x][to.y] = panel
-            panel.point = to
-        for panel in outdates:
-            reverse = vector.clone().reverse()
-            current_point = panel.point+reverse
-            current_panel = self.get_panel(current_point)
-            while current_panel.unit:
-                current_point = current_point + reverse
-                current_panel = self.get_panel(current_point)
-            self._map[current_point.x][current_point.y] = panel
-            panel.point = current_point
-            panel.change_owner(unit.owner)
-        map(lambda p: self.check(p), outdates)
-      
-    def battle(self, a, b):
-        u"""ユニットaがユニットbを攻撃する"""
-        b.hp -= a.attack
-        if b.hp <= 0:
-            del self.units[self.units.index(b)]
-        #ToDo エフェクト
-      
     def can_rotation(self, panels):
         owner = panels[0].owner
         for panel in panels:
@@ -140,4 +111,4 @@ class Stage(Singleton):
         for x in xrange(lp.x-2,lp.x+2):
             for y in xrange(lp.y-2,lp.y+2):
                 unit = Attack.generate(self.get_panel(LocalPoint(x,y)), self)
-                if unit: self.units.append(unit)
+                if unit: self.unitmng.units.append(unit)
