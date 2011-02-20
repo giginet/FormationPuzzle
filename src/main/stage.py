@@ -50,8 +50,21 @@ class Stage(Singleton):
                 del self.panelsets[i]
         map(lambda panelset: panelset.act(),self.panelsets)
         for unit in self.units:
-            self.move_unit(unit, LocalPoint(0,-1))
-                
+            res = unit.act()
+            if res == -1:
+                unit.disappear()
+                del self.units[self.units.index(unit)]
+            elif res:
+                vector = LocalPoint(0,-1+2*unit.owner)
+                hits = []
+                for panel in unit.panels:
+                    next = self.get_panel(panel.point+vector)
+                    if not next.can_through() and not unit.has(next): hits.append(next)
+                if hits:
+                    pass
+                else:
+                    self.move_unit(unit, vector)
+    
     def render(self):
         self.frame.render()
         map((lambda column: map((lambda panel: panel.render()),column)), self._map)
@@ -83,20 +96,17 @@ class Stage(Singleton):
     
     def move_unit(self, unit, vector):
         u"""unitをvectorの方向に移動させる"""
-        for panel in unit.panels:
-            next = self.get_panel(panel.point+vector)
-            if not next.can_through() and not unit.has(next): return
         updates = []
         outdates = []
+        for panel in unit.panels:
+            next = self.get_panel(panel.point+vector)
+            if not next.unit: outdates.append(next)
         for panel in unit.panels:
             updates.append((panel, panel.point+vector))
             self._map[panel.point.x][panel.point.y] = DummyPanel(panel.point.x, panel.point.y)
         for tuple in updates:
             panel = tuple[0]
             to = tuple[1]
-            next = self.get_panel(to)
-            if not next.unit:
-                outdates.append(next)
             self._map[to.x][to.y] = panel
             panel.point = to
         for panel in outdates:
@@ -108,7 +118,16 @@ class Stage(Singleton):
                 current_panel = self.get_panel(current_point)
             self._map[current_point.x][current_point.y] = panel
             panel.point = current_point
-        
+            panel.change_owner(unit.owner)
+        map(lambda p: self.check(p), outdates)
+      
+    def battle(self, a, b):
+        u"""ユニットaがユニットbを攻撃する"""
+        b.hp -= a.attack
+        if b.hp <= 0:
+            del self.units[self.units.index(b)]
+        #ToDo エフェクト
+      
     def can_rotation(self, panels):
         owner = panels[0].owner
         for panel in panels:

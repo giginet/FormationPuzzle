@@ -20,8 +20,7 @@ class Image(pygame.sprite.Sprite):
             area        - represents a smaller portion of the source to draw
         """
         super(Image, self).__init__()
-        self.image = pygame.image.load(filepath).convert_alpha()
-        self.rect = self.image.get_rect()
+        self.change_image(filepath)
         self.area = area
         self.hit = pygame.Rect(0, 0, self.rect.w, self.rect.h)
         self.x = x
@@ -35,6 +34,10 @@ class Image(pygame.sprite.Sprite):
         w = self.hit.w
         h = self.hit.h
         return pygame.Rect(x, y, w, h)
+
+    def change_image(self, filepath):
+        self.image = pygame.image.load(filepath).convert_alpha()
+        self.rect = self.image.get_rect()
 
     def _rotate(self, dest, center=None):
         if not center: center = self.center

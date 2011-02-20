@@ -7,7 +7,6 @@ from . import Unit
 from main.utils import LocalPoint
 
 class Attack(Unit):
-    filepath = u"../resources/image/main/unit/attack.png"
     offset = (-1, -1)
     
     @classmethod

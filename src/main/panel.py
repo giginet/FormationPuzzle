@@ -35,6 +35,16 @@ class Panel(Image):
     def can_rotate(self): return not self.rotation and not self.unit
     def can_through(self): return not self.unit and not self.rotation
     def is_dummy(self): return False
+    def change_owner(self, owner):
+        if not self.owner == owner:
+            self.owner = owner
+            self.change_image("../resources/image/main/panel/panel%d_%d.png" % (owner, self.color))
+    def change_color(self):
+        color = random.randint(0,3)
+        if not self.color == color:
+            self.color = color
+            self.change_image("../resources/image/main/panel/panel%d_%d.png" % (self.owner, self.color))
+        
 class PanelSet(object):
     def __init__(self, panels, degree=0):
         u"""
