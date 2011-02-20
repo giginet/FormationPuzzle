@@ -12,7 +12,6 @@ from main.player import Player
 from main.panel import Panel, PanelSet, DummyPanel
 
 from main.utils import LocalPoint
-from main.unit.attack import Attack
 from main.unitmanager import UnitManager
 
 class Stage(Singleton):
@@ -47,13 +46,12 @@ class Stage(Singleton):
                 self.rotate(ps.panels, ps.degree)
                 for panel in ps.panels: 
                     panel.rotation = False
-                    self.check(panel)
+                    self.unitmng.check(panel)
                 del self.panelsets[i]
         map(lambda panelset: panelset.act(),self.panelsets)
         for unit in self.unitmng.units:
             res = unit.act()
             if res == -1:
-                unit.disappear()
                 self.unitmng.remove(unit)
             elif res:
                 vector = LocalPoint(0,-1+2*unit.owner)
@@ -105,10 +103,3 @@ class Stage(Singleton):
             if not panel.can_rotate(): return False
             if panel.owner != owner: return False
         return True
-    
-    def check(self, panel):
-        lp = panel.point
-        for x in xrange(lp.x-2,lp.x+2):
-            for y in xrange(lp.y-2,lp.y+2):
-                unit = Attack.generate(self.get_panel(LocalPoint(x,y)), self)
-                if unit: self.unitmng.units.append(unit)

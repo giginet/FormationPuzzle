@@ -5,9 +5,11 @@
 #
 from . import Unit
 from main.utils import LocalPoint
+from parameter import ATTACK
 
 class Attack(Unit):
     offset = (-1, -1)
+    parameter = ATTACK
     
     @classmethod
     def generate(cls, panel, stage):

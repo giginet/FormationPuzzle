@@ -13,7 +13,7 @@ class Unit(object):
         self.panels = panels
         self.owner = panels[0].owner
         self.color = panels[0].color
-        self.image = Animation(self.parameter['image'], AnimationInfo(self.owner,0,0,60,60,0))
+        self.image = Animation(self.parameter['image'], AnimationInfo(self.owner,0,0,self.parameter['width'],self.parameter['height'],0))
         self.hp = self.parameter['hp']
         self.attack = self.parameter['attack']
         self.limit = self.parameter['limit']

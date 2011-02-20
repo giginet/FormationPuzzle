@@ -5,12 +5,19 @@
 #
 from pywaz.utils.singleton import Singleton
 from main.panel import DummyPanel
+from main.utils import LocalPoint
+from main.unit.attack import Attack
+from main.unit.bomb import Bomb
+from main.unit.guard import Guard
+from main.unit.sweep import Sweep
+
 
 class UnitManager(Singleton):
     units = []
     def __init__(self, stage):
         self.stage = stage
     def remove(self, unit):
+        unit.disappear()
         del self.units[self.units.index(unit)]
     def move_unit(self, unit, vector):
         u"""unitをvectorの方向に移動させる"""
@@ -37,7 +44,7 @@ class UnitManager(Singleton):
             self.stage._map[current_point.x][current_point.y] = panel
             panel.point = current_point
             panel.change_owner(unit.owner)
-        map(lambda p: self.stage.check(p), outdates)
+        map(lambda p: self.check(p), outdates)
     def battle(self, a, b):
         u"""ユニットaがユニットbを攻撃する"""
         b.hp -= a.attack
@@ -49,3 +56,16 @@ class UnitManager(Singleton):
     def get_unit_by_panel(self, panel):
         for unit in self.units:
             if unit.has(panel): return unit
+    def check(self, panel):
+        lp = panel.point
+        unit = []
+        for x in xrange(lp.x-2,lp.x+2):
+            for y in xrange(lp.y-2,lp.y+2):
+                unit.append(Sweep.generate(self.stage.get_panel(LocalPoint(x,y)), self.stage))
+                unit.append(Attack.generate(self.stage.get_panel(LocalPoint(x,y)), self.stage))
+                unit.append(Guard.generate(self.stage.get_panel(LocalPoint(x,y)), self.stage))
+                unit.append(Bomb.generate(self.stage.get_panel(LocalPoint(x,y)), self.stage))
+        u2 = []
+        for u in unit:
+            if u: u2.append(u)
+        if u2: self.units.extend(u2)
