@@ -30,11 +30,11 @@ class Number(object):
         area = Rect(i*self.WIDTH, 0, self.WIDTH, self.HEIGHT)
         return Image(self.filepath,area=area,x=self.x+(self.WIDTH+self.OFFSET)*n,y=self.y)
     
-    def render(self):
+    def draw(self):
         if self.n != self.pre_n:
             self.pre_n = self.n
             self.images = []
             for i,s in enumerate(str(self.n)):
                 self.images.append(self._parse(i, int(s)))
         for image in self.images:
-            image.render()
+            image.draw()

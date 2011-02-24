@@ -7,6 +7,7 @@ import settings
 
 from pywaz.utils.singleton import Singleton
 from pywaz.sprite.image import Image
+from pywaz.core.game import Game
 
 from main.player import Player, NPC
 from main.panel import Panel, PanelSet, DummyPanel
@@ -20,6 +21,8 @@ class Stage(Singleton):
     panelsets = [] #回転中のPanelSet
     
     def __init__(self):
+        game = Game()
+        game.add(self.frame)
         self._map = []
         self.unitmng = UnitManager(self)
         for y in xrange(settings.STAGE_HEIGHT):
@@ -28,9 +31,13 @@ class Stage(Singleton):
                 owner = 0
                 if y < settings.STAGE_HEIGHT/2:
                     owner = 1
-                column.append(Panel(x, y, owner))
+                panel = Panel(x, y, owner)
+                column.append(panel)
+                game.add(panel)
             self._map.append(column)
         self._map = map(list, zip(*self._map)) #transpose matrix
+        for p in self.players:
+            game.add(p)
         
     def act(self):
         for player in self.players:
@@ -72,12 +79,14 @@ class Stage(Singleton):
                     map(lambda enemy: self.unitmng.battle(unit, enemy), enemies)
                 elif not hit:
                     self.unitmng.move_unit(unit, vector)
-    def render(self):
-        self.frame.render()
-        map((lambda column: map((lambda panel: panel.render()),column)), self._map)
-        map(lambda u:u.render(),self.unitmng.units)
-        map(lambda p:p.render(),self.players)
-        
+    def draw(self):
+        return [self.frame]
+#        self.frame.draw()
+#        map((lambda column: map((lambda panel: panel.draw()),column)), self._map)
+#        map(lambda u:u.draw(),self.unitmng.units)
+#        map(lambda p:p.draw(),self.players)
+#        return rect_draw
+#        
     def get_panel(self, lp):
         if 0 <= lp.x < settings.STAGE_WIDTH and 0<= lp.y < settings.STAGE_HEIGHT:
             return self._map[lp.x][lp.y]

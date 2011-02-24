@@ -55,7 +55,7 @@ class Image(pygame.sprite.Sprite):
             image = self.image
         return image, dest
 
-    def render(self, surface=Game.get_screen(), dest=None, area=None, special_flags = 0):
+    def draw(self, surface=Game.get_screen(), dest=None, area=None, special_flags = 0):
         u"""Draw this sprite to the surface
 
         Argument:

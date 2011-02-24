@@ -33,6 +33,6 @@ class SceneManager(object):
         if not self.is_empty():
             self.current_scene.act()
     
-    def render(self):
+    def draw(self):
         if not self.is_empty():
-            self.current_scene.render()
+            return self.current_scene.draw()

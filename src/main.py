@@ -27,11 +27,11 @@ def main():
         game.get_scene_manager().change_scene('logo')
     while 1:
         game._clock.tick(60)
-        #game._screen.fill(game.current_scene().BACKGROUND) # 画面のクリア
+        game._screen.fill(game.current_scene().BACKGROUND) # 画面のクリア
         Key.poll()
         game.act()
-        game.render()
-        #pygame.display.update([Rect(0,0,1,1)]) # 画面を反映
+        rects = game.draw()
+        pygame.display.update(rects) # 画面を反映
         for event in pygame.event.get(): # イベントチェック
             if event.type == QUIT: # 終了が押された？
                 return

@@ -25,8 +25,8 @@ class Game(Singleton):
         cls._scene_manager.act()
         
     @classmethod
-    def render(cls):
-        cls._scene_manager.render()
+    def draw(cls):
+        return cls._scene_manager.draw()
         
     @classmethod
     def get_scene_manager(cls):
@@ -41,13 +41,17 @@ class Game(Singleton):
         pygame.display.set_caption(caption)
     
     @classmethod
+    def add(cls, sprite):
+        cls.current_scene().sprites.add(sprite)
+    
+    @classmethod
     def mainloop(cls):
         while 1:
             cls._clock.tick(60)
             cls._screen.fill(cls.current_scene().BACKGROUND) # 画面のクリア
             Key.poll()
             cls.act()
-            cls.render()
+            cls.draw()
             pygame.display.flip() # 画面を反映
             for event in pygame.event.get(): # イベントチェック
                 if event.type == QUIT: # 終了が押された？

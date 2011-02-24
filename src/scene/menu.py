@@ -18,7 +18,7 @@ class LogoScene(Scene):
     BACKGROUND = (255,255,255)
     def ready(self):
         self.logo = Image("../resources/image/menu/logo.jpg", x=300, y=250)
-        self.sprites.append(self.logo)
+        self.sprites.add(self.logo)
         self.timer = Timer(180)
         self.timer.play()
         

@@ -22,9 +22,9 @@ class Timer(object):
         self.timer = _Timer(max*settings.FRAMERATE)
         self.pre_second = 0
     
-    def render(self):
+    def draw(self):
         for image in self.images:
-            if image: image.render()
+            if image: image.draw()
     
     def act(self):
         self.timer.tick()

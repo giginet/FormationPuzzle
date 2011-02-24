@@ -79,14 +79,14 @@ class Animation(Image):
         y = self.ainfo.index * h
         return pygame.Rect(x, y, w, h)
     
-    def render(self, surface=Game.get_screen(), dest=None, special_flags = 0):
+    def draw(self, surface=Game.get_screen(), dest=None, special_flags = 0):
         u"""Draw this sprite to the surface and animate
 
         Attribute:
             surface     - the target surface
             dest        - the `Rect` of where to draw on the surface
         """
-        updated_rect = super(Animation, self).render(surface, dest, self.draw_area, special_flags)
+        updated_rect = super(Animation, self).draw(surface, dest, self.draw_area, special_flags)
         if self.animation_enable:
             self.animation_wait.tick()
             if self.animation_wait.is_over():

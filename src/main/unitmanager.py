@@ -4,13 +4,13 @@
 #    Created by giginet
 #
 from pywaz.utils.singleton import Singleton
+
 from main.panel import DummyPanel
 from main.utils import LocalPoint
 from main.unit.attack import Attack
 from main.unit.bomb import Bomb
 from main.unit.guard import Guard
 from main.unit.sweep import Sweep
-
 
 class UnitManager(Singleton):
     units = []
@@ -70,4 +70,5 @@ class UnitManager(Singleton):
         u2 = []
         for u in unit:
             if u: u2.append(u)
+                
         if u2: self.units.extend(u2)

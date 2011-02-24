@@ -19,19 +19,21 @@ from main.navigation.timer import Timer as NavigationTimer
 
 class GameScene(Scene):
     def ready(self):
-        self.stage = Stage()
         self.background = Image(u'../resources/image/main/background.png')
+        self.sprites.add(self.background)
+        self.stage = Stage()
         self.bgm = BGM(u'../resources/bgm/game_intro.wav', -1, u'../resources/bgm/game_loop.wav')
-        self.sprites.append(self.background)
         self.timer = NavigationTimer(120, x=100, y=100)
         self.timer.play()
         
     def act(self):
+        super(GameScene, self).act()
         self.stage.act()
         self.bgm.play()
         self.timer.act()
     
-    def render(self):
-        super(GameScene, self).render()
-        self.stage.render()
-        self.timer.render()
+    def draw(self):
+        rect_draw = super(GameScene, self).draw()
+        rect_draw += self.stage.draw()
+        self.timer.draw()
+        return rect_draw

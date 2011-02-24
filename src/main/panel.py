@@ -27,10 +27,10 @@ class Panel(Image):
         self.disable_timer = Timer(120)
         super(Panel,self).__init__("../resources/image/main/panel/panel%d_%d.png" % (owner, self.color), x=x*settings.PANELSIZE+settings.STAGE_OFFSET[0], y=y*settings.PANELSIZE+settings.STAGE_OFFSET[1])
     def __eq__(self, p): return self.point == p.point
-    def render(self):
+    def draw(self, surface):
         self.x = self.point.x*settings.PANELSIZE+settings.STAGE_OFFSET[0]
         self.y = self.point.y*settings.PANELSIZE+settings.STAGE_OFFSET[1]
-        super(Panel, self).render()
+        super(Panel, self).draw()
     def act(self):
         if self.disable:
             self.disable_timer.tick()
@@ -87,5 +87,5 @@ class DummyPanel(Panel):
     def can_unit(self): return False
     def can_rotate(self): return False
     def can_through(self): return False
-    def render(self): pass
+    def draw(self): pass
     def is_dummy(self): return True
