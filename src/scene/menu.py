@@ -33,8 +33,8 @@ class LogoScene(Scene):
         
 class TitleScene(Scene):
     def ready(self):
-        self.bgm = BGM(u"../resources/bgm/title.mp3")
-        self.bgm.play()
+        self.bgm = BGM(u'../resources/bgm/title_intro.wav', -1, u'../resources/bgm/title_loop.wav')
         
     def act(self):
-        pass
+        self.bgm.play()
+        

@@ -8,7 +8,7 @@ import settings
 from pywaz.utils.singleton import Singleton
 from pywaz.sprite.image import Image
 
-from main.player import Player
+from main.player import Player, NPC
 from main.panel import Panel, PanelSet, DummyPanel
 
 from main.utils import LocalPoint
@@ -16,7 +16,7 @@ from main.unitmanager import UnitManager
 
 class Stage(Singleton):
     frame = Image(u'../resources/image/main/frame.png', x=settings.STAGE_OFFSET[0]-15, y=settings.STAGE_OFFSET[1]-15)
-    players = [Player(0)]
+    players = [Player(0), Player(1)]
     panelsets = [] #回転中のPanelSet
     
     def __init__(self):
@@ -58,7 +58,7 @@ class Stage(Singleton):
             if res == -1:
                 self.unitmng.remove(unit)
             elif res:
-                vector = LocalPoint(0,-1+2*unit.owner)
+                vector = unit.degree
                 enemies = []
                 hit = False
                 for panel in unit.panels:
@@ -107,3 +107,10 @@ class Stage(Singleton):
             if not panel.can_rotate(): return False
             if panel.owner != owner: return False
         return True
+    
+    def culc_gauge(self):
+        count = [0,0]
+        for x in xrange(settings.STAGE_WIDTH):
+            for y in xrange(settings.STAGE_HEIGHT):
+                count[self._map[x][y].owner]+=1
+        return count

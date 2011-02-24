@@ -8,11 +8,13 @@ class Unit(object):
     animation_enable = False
     offset = (0,0)
     parameter = ATTACK
+    degree = LocalPoint(0,0)
     
     def __init__(self, panels):
         self.panels = panels
         self.owner = panels[0].owner
         self.color = panels[0].color
+        self.degree = LocalPoint(0, -1+self.owner*2)
         self.image = Animation(self.parameter['image'], AnimationInfo(self.owner,0,0,self.parameter['width'],self.parameter['height'],0))
         self.hp = self.parameter['hp']
         self.attack = self.parameter['attack']
