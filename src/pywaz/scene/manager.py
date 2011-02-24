@@ -29,9 +29,9 @@ class SceneManager(object):
     def is_empty(self):
         return not self._current_scene
         
-    def act(self):
+    def update(self):
         if not self.is_empty():
-            self.current_scene.act()
+            self.current_scene.update()
     
     def draw(self):
         if not self.is_empty():

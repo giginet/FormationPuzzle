@@ -26,11 +26,11 @@ class GameScene(Scene):
         self.timer = NavigationTimer(120, x=100, y=100)
         self.timer.play()
         
-    def act(self):
-        super(GameScene, self).act()
-        self.stage.act()
+    def update(self):
+        super(GameScene, self).update()
+        self.stage.update()
         self.bgm.play()
-        self.timer.act()
+        self.timer.update()
     
     def draw(self):
         rect_draw = super(GameScene, self).draw()

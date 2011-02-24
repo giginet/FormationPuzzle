@@ -39,9 +39,9 @@ class Stage(Singleton):
         for p in self.players:
             game.add(p)
         
-    def act(self):
+    def update(self):
         for player in self.players:
-            player.act()
+            player.update()
             press = player.poll()
             if press:
                 lp = player.get_local_point()
@@ -59,9 +59,9 @@ class Stage(Singleton):
                     panel.rotation = False
                     self.unitmng.check(panel)
                 del self.panelsets[i]
-        map(lambda panelset: panelset.act(),self.panelsets)
+        map(lambda panelset: panelset.update(),self.panelsets)
         for unit in self.unitmng.units:
-            res = unit.act()
+            res = unit.update()
             if res == -1:
                 self.unitmng.remove(unit)
             elif res:
@@ -80,13 +80,13 @@ class Stage(Singleton):
                 elif not hit:
                     self.unitmng.move_unit(unit, vector)
     def draw(self):
-        return [self.frame]
-#        self.frame.draw()
-#        map((lambda column: map((lambda panel: panel.draw()),column)), self._map)
-#        map(lambda u:u.draw(),self.unitmng.units)
-#        map(lambda p:p.draw(),self.players)
-#        return rect_draw
-#        
+        rect_draw = []
+        self.frame.draw()
+        #map((lambda column: map((lambda panel: panel.draw()),column)), self._map)
+        map(lambda u:u.draw(),self.unitmng.units)
+        #map(lambda p:p.draw(),self.players)
+        return rect_draw
+        
     def get_panel(self, lp):
         if 0 <= lp.x < settings.STAGE_WIDTH and 0<= lp.y < settings.STAGE_HEIGHT:
             return self._map[lp.x][lp.y]

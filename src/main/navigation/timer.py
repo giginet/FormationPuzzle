@@ -26,7 +26,7 @@ class Timer(object):
         for image in self.images:
             if image: image.draw()
     
-    def act(self):
+    def update(self):
         self.timer.tick()
         n = (self.timer.max - self.timer.now)/settings.FRAMERATE
         minute = int(n/60)

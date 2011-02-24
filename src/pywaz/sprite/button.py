@@ -26,7 +26,7 @@ class Button(Animation):
     def on_release(self):
         self.ainfo.index = 3
     
-    def act(self):
+    def update(self):
         if self.hit_area.collidepoint(Mouse.get_pos()):
             if not self.hovered:
                 self.on_mouseover()

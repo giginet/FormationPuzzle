@@ -16,7 +16,7 @@ class Scene(object):
     def ready(self):
         raise NotImplementedError
     
-    def act(self, *args, **kwargs):
+    def update(self, *args, **kwargs):
         self.sprites.update(*args, **kwargs)
     
     def draw(self, surface=Game.get_screen()):
@@ -25,4 +25,4 @@ class Scene(object):
         return update_rect
         
     def finalize(self):
-        self.sprites = []
+        self.sprites.empty()

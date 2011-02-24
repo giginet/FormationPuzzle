@@ -21,8 +21,8 @@ class Game(Singleton):
         return cls._screen.window
     
     @classmethod
-    def act(cls):
-        cls._scene_manager.act()
+    def update(cls):
+        cls._scene_manager.update()
         
     @classmethod
     def draw(cls):
@@ -50,7 +50,7 @@ class Game(Singleton):
             cls._clock.tick(60)
             cls._screen.fill(cls.current_scene().BACKGROUND) # 画面のクリア
             Key.poll()
-            cls.act()
+            cls.update()
             cls.draw()
             pygame.display.flip() # 画面を反映
             for event in pygame.event.get(): # イベントチェック

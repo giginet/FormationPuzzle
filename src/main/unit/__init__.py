@@ -1,6 +1,4 @@
 from pywaz.sprite.animation import Animation, AnimationInfo
-from pywaz.core.game import Game
-
 from main.utils import LocalPoint
 from pywaz.utils.timer import Timer
 
@@ -18,7 +16,6 @@ class Unit(object):
         self.color = panels[0].color
         self.degree = LocalPoint(0, -1+self.owner*2)
         self.image = Animation(self.parameter['image'], AnimationInfo(self.owner,0,0,self.parameter['width'],self.parameter['height'],0))
-        Game.add(self.image)
         self.hp = self.parameter['hp']
         self.attack = self.parameter['attack']
         self.limit = self.parameter['limit']
@@ -40,7 +37,7 @@ class Unit(object):
         else:
             return True
         
-    def act(self):
+    def update(self):
         self.image.x, self.image.y = (self.panels[0].point + LocalPoint(self.offset)).to_global().to_pos()
         self.timer.tick()
         if self.timer.is_over():
@@ -51,6 +48,9 @@ class Unit(object):
             else: return -1
         return
     
+    def draw(self):
+        self.image.draw()
+        
     def get_front(self, vector):
         x, y = vector.to_pos()
         if x is 0 and y is -1:

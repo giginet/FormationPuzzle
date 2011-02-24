@@ -31,7 +31,7 @@ class Panel(Image):
         self.x = self.point.x*settings.PANELSIZE+settings.STAGE_OFFSET[0]
         self.y = self.point.y*settings.PANELSIZE+settings.STAGE_OFFSET[1]
         super(Panel, self).draw()
-    def act(self):
+    def update(self):
         if self.disable:
             self.disable_timer.tick()
             if self.disable_timer.is_over():
@@ -73,7 +73,7 @@ class PanelSet(object):
         panels[2].center = Vector(0,0)
         panels[3].center = Vector(settings.PANELSIZE,0)
         self.timer.play()
-    def act(self):
+    def update(self):
         self.timer.tick()
         if not self.timer.is_over():
             for panel in self.panels:

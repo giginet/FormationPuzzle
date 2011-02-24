@@ -28,7 +28,7 @@ class Player(Animation):
         Mouse.hide_cursor()
         self.x, self.y = local_to_global(self.initial_position[n]).to_pos()
         
-    def act(self):
+    def update(self):
         if self.number == 0:
             if self.in_map():
                 self.x, self.y = map((lambda x: x-settings.PANELSIZE),(self.get_local_point().add(LocalPoint(1,1))).to_global().to_pos())

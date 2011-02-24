@@ -22,7 +22,7 @@ class LogoScene(Scene):
         self.timer = Timer(180)
         self.timer.play()
         
-    def act(self):
+    def update(self):
         self.timer.tick()
         if self.timer.is_over() or Mouse.is_press('LEFT'):
             Game.get_scene_manager().change_scene('title')
@@ -35,6 +35,6 @@ class TitleScene(Scene):
     def ready(self):
         self.bgm = BGM(u'../resources/bgm/title_intro.wav', -1, u'../resources/bgm/title_loop.wav')
         
-    def act(self):
+    def update(self):
         self.bgm.play()
         
