@@ -26,14 +26,13 @@ def main():
         game.get_scene_manager().change_scene('game')
     else:
         game.get_scene_manager().change_scene('logo')
-    game._screen.fill(game.current_scene().BACKGROUND) # 画面のクリア
-    
     while 1:
         game._clock.tick(settings.FPS)
         Key.poll()
+        scene = game.current_scene()
+        scene.sprites.clear(game.get_screen(), scene.BACKGROUND_SURFACE)
         game.update()
         rects = game.draw()
-        print rects
         pygame.display.update(rects) # 画面を反映
         for event in pygame.event.get(): # イベントチェック
             if event.type == QUIT: return

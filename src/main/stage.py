@@ -5,9 +5,12 @@
 #
 import settings
 
+from pygame.rect import Rect
+
 from pywaz.utils.singleton import Singleton
 from pywaz.sprite.image import Image
 from pywaz.core.game import Game
+from pywaz.sprite import OrderedUpdates
 
 from main.player import Player, NPC
 from main.panel import Panel, PanelSet, DummyPanel
@@ -15,14 +18,13 @@ from main.panel import Panel, PanelSet, DummyPanel
 from main.utils import LocalPoint
 from main.unitmanager import UnitManager
 
+
 class Stage(Singleton):
-    frame = Image(u'../resources/image/main/frame.png', x=settings.STAGE_OFFSET[0]-15, y=settings.STAGE_OFFSET[1]-15)
-    players = [Player(0), Player(1)]
+    players = OrderedUpdates(Player(0), Player(1))
     panelsets = [] #回転中のPanelSet
     
     def __init__(self):
-        game = Game()
-        game.add(self.frame)
+        self.chips = OrderedUpdates()
         self._map = []
         self.unitmng = UnitManager(self)
         for y in xrange(settings.STAGE_HEIGHT):
@@ -33,11 +35,9 @@ class Stage(Singleton):
                     owner = 1
                 panel = Panel(x, y, owner)
                 column.append(panel)
-                game.add(panel)
+                self.chips.add(panel)
             self._map.append(column)
         self._map = map(list, zip(*self._map)) #transpose matrix
-        for p in self.players:
-            game.add(p)
         
     def update(self):
         for player in self.players:
@@ -80,12 +80,15 @@ class Stage(Singleton):
                 elif not hit:
                     self.unitmng.move_unit(unit, vector)
     def draw(self):
-        rect_draw = []
-        self.frame.draw()
-        #map((lambda column: map((lambda panel: panel.draw()),column)), self._map)
-        map(lambda u:u.draw(),self.unitmng.units)
-        #map(lambda p:p.draw(),self.players)
-        return rect_draw
+        update_rect = []
+#        for x in xrange(settings.STAGE_WIDTH):
+#            for y in xrange(settings.STAGE_HEIGHT):
+#                self._map[x][y].draw()
+        update_rect += self.chips.draw(Game.get_screen())
+        update_rect += self.unitmng.draw()
+        update_rect += self.players.draw(Game.get_screen())
+        #map(lambda u:u.draw(),self.players)
+        return update_rect
         
     def get_panel(self, lp):
         if 0 <= lp.x < settings.STAGE_WIDTH and 0<= lp.y < settings.STAGE_HEIGHT:
@@ -117,9 +120,18 @@ class Stage(Singleton):
             if panel.owner != owner: return False
         return True
     
-    def culc_gauge(self):
+    def calc_gauge(self):
         count = [0,0]
         for x in xrange(settings.STAGE_WIDTH):
             for y in xrange(settings.STAGE_HEIGHT):
                 count[self._map[x][y].owner]+=1
         return count
+    
+    def redraw_frame(self):
+        u"""フレームを再描画する必要があるかどうか評価
+        端っこの座標で回転するPanelSetがあるかどうか
+        """
+        for ps in self.panelsets:
+            panel = ps.panels[0]
+            if panel.point.x == 0 or panel.point.x == settings.STAGE_WIDTH-2 or panel.point.y == 0 or panel.point.y == settings.STAGE_HEIGHT-2: return True
+        return False

@@ -10,6 +10,7 @@ from pywaz.sprite.image import Image
 from pywaz.sprite.animation import Animation, AnimationInfo
 from pywaz.utils.vector import Vector
 from pywaz.utils.timer import Timer
+from pywaz.core.game import Game
 
 from main.utils import LocalPoint
 
@@ -27,15 +28,17 @@ class Panel(Image):
         self.disable_timer = Timer(120)
         super(Panel,self).__init__("../resources/image/main/panel/panel%d_%d.png" % (owner, self.color), x=x*settings.PANELSIZE+settings.STAGE_OFFSET[0], y=y*settings.PANELSIZE+settings.STAGE_OFFSET[1])
     def __eq__(self, p): return self.point == p.point
-    def draw(self, surface):
+    def draw(self, surface=Game.get_screen()):
         self.x = self.point.x*settings.PANELSIZE+settings.STAGE_OFFSET[0]
         self.y = self.point.y*settings.PANELSIZE+settings.STAGE_OFFSET[1]
-        super(Panel, self).draw()
+        self.rect.x, self.rect.y = self.x, self.y
+        super(Panel, self).draw(surface)
     def update(self):
         if self.disable:
             self.disable_timer.tick()
             if self.disable_timer.is_over():
                 self.set_disable(False)
+        return False
     def get_point(self): return self.point
     def can_unit(self): return not self.rotation and not self.disable and not self.unit
     def can_rotate(self): return not self.rotation
@@ -67,7 +70,7 @@ class PanelSet(object):
         """
         self.degree = degree
         self.panels = panels
-        self.timer = Timer(6)
+        self.timer = Timer(7)
         panels[0].center = Vector(settings.PANELSIZE,settings.PANELSIZE)
         panels[1].center = Vector(0, settings.PANELSIZE)
         panels[2].center = Vector(0,0)
@@ -78,7 +81,8 @@ class PanelSet(object):
         if not self.timer.is_over():
             for panel in self.panels:
                 panel.rotation = True
-                panel.angle = self.timer.now*90/self.timer.max*self.degree
+                if self.timer.now < self.timer.max:
+                    panel.angle = self.timer.now*90/(self.timer.max-1)*self.degree
     def is_over(self):
         return self.timer.is_over()
 class DummyPanel(Panel):

@@ -3,7 +3,10 @@
 #    Created on 2011/02/21
 #    Created by giginet
 #
+from pygame.rect import Rect
 from pywaz.utils.singleton import Singleton
+from pywaz.sprite import OrderedUpdates
+from pywaz.core.game import Game
 
 from main.panel import DummyPanel
 from main.utils import LocalPoint
@@ -14,10 +17,12 @@ from main.unit.sweep import Sweep
 
 class UnitManager(Singleton):
     units = []
+    images = OrderedUpdates()
     def __init__(self, stage):
         self.stage = stage
     def remove(self, unit):
         unit.disappear()
+        self.images.remove(unit.image)
         del self.units[self.units.index(unit)]
     def move_unit(self, unit, vector):
         u"""unitをvectorの方向に移動させる"""
@@ -53,6 +58,8 @@ class UnitManager(Singleton):
             print u"""敵ユニットをやっつけた！"""
             self.remove(b)
         #ToDo エフェクト
+    def draw(self):
+        return self.images.draw(Game.get_screen())
     def get_unit_by_panel(self, panel):
         for unit in self.units:
             if unit.has(panel): return unit
@@ -69,6 +76,8 @@ class UnitManager(Singleton):
                 unit.append(Bomb.generate(self.stage.get_panel(LocalPoint(x,y)), self.stage))
         u2 = []
         for u in unit:
-            if u: u2.append(u)
+            if u: 
+                u2.append(u)
+                self.images.add(u.image)
                 
         if u2: self.units.extend(u2)

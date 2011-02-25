@@ -3,12 +3,14 @@
 #    Created on 2011/02/11
 #    Created by giginet
 #
+from pywaz.sprite.image import Image
 from pywaz.sprite import OrderedUpdates
 from pywaz.core.game import Game
 
 class Scene(object):
     key = u"AbstractScene"
-    BACKGROUND = (0,0,0)
+    BACKGROUND = (0,0,255)
+    BACKGROUND_SURFACE = Image(u'../resources/image/main/background.png').image
     
     def __init__(self):
         self.sprites = OrderedUpdates()

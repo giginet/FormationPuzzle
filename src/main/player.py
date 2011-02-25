@@ -3,16 +3,17 @@
 #    Created on 2011/02/17
 #    Created by giginet
 #
+import pygame
 import settings
 import math
 
-from pywaz.sprite.animation import Animation, AnimationInfo
+from pywaz.sprite.animation import Image
 from pywaz.device.mouse import Mouse
 from pywaz.utils.timer import Timer
 
 from main.utils import global_to_local, LocalPoint, local_to_global
 
-class Player(Animation):
+class Player(Image):
     is_human = True
     pressed = False
     initial_position = (
@@ -20,18 +21,19 @@ class Player(Animation):
                         (0,0),
     )
     
-    
     def __init__(self, n):
         self.number = n
-        super(Player, self).__init__(u'../resources/image/main/player/cursor.png', AnimationInfo(n,0,0,40,40,0))
+        self.x, self.y = local_to_global(self.initial_position[n]).to_pos()
+        super(Player, self).__init__(u'../resources/image/main/player/cursor.png', area=pygame.rect.Rect(0,n*20,40,40),x=100, y=100)
         self.animation_enable = False
         Mouse.hide_cursor()
-        self.x, self.y = local_to_global(self.initial_position[n]).to_pos()
         
     def update(self):
         if self.number == 0:
             if self.in_map():
                 self.x, self.y = map((lambda x: x-settings.PANELSIZE),(self.get_local_point().add(LocalPoint(1,1))).to_global().to_pos())
+                self.rect.x = self.x
+                self.rect.y = self.y
                 Mouse.hide_cursor()
             else: 
                 Mouse.show_cursor()
@@ -54,6 +56,6 @@ class Player(Animation):
     def in_map(self):
         lp = self.get_local_point()
         return 0 <= lp.x < settings.STAGE_WIDTH-1 and 0 <= lp.y < settings.STAGE_HEIGHT-1
-
-class NPC(Animation):
+    
+class NPC(Player):
     pass

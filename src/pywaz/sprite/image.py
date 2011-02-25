@@ -21,6 +21,8 @@ class Image(pygame.sprite.Sprite):
         """
         super(Image, self).__init__()
         self.change_image(filepath)
+        self.rect.x = x
+        self.rect.y = y
         self.area = area
         self.hit = pygame.Rect(0, 0, self.rect.w, self.rect.h)
         self.x = x

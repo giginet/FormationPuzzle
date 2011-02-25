@@ -4,6 +4,7 @@
 #    Created by giginet
 #
 import settings
+import pygame
 
 from pywaz.scene.abstractscene import Scene
 from pywaz.core.game import Game
@@ -20,20 +21,25 @@ from main.navigation.timer import Timer as NavigationTimer
 class GameScene(Scene):
     def ready(self):
         self.background = Image(u'../resources/image/main/background.png')
-        self.sprites.add(self.background)
+        self.frame = Image(u'../resources/image/main/frame.png', x=settings.STAGE_OFFSET[0]-15, y=settings.STAGE_OFFSET[1]-15)
         self.stage = Stage()
         self.bgm = BGM(u'../resources/bgm/game_intro.wav', -1, u'../resources/bgm/game_loop.wav')
         self.timer = NavigationTimer(120, x=100, y=100)
         self.timer.play()
+        self.background.draw()
+        self.frame.draw()
+        pygame.display.update()
         
     def update(self):
         super(GameScene, self).update()
         self.stage.update()
+        #if not settings.DEBUG: 
         self.bgm.play()
         self.timer.update()
     
     def draw(self):
-        rect_draw = super(GameScene, self).draw()
-        rect_draw += self.stage.draw()
+        super(GameScene, self).draw()
+        if self.stage.redraw_frame(): self.frame.draw() #マップのはじで回転させたとき、回転の軌跡が残ってしまうため、フレームを再描画
+        rect_draw = self.stage.draw()
         self.timer.draw()
         return rect_draw
