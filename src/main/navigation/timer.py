@@ -7,7 +7,7 @@ import settings
 
 from pywaz.utils.timer import Timer as _Timer
 from .number import Number
-from pywaz.sprite.animation import Animation, AnimationInfo, Image
+from pywaz.sprite.animation import Image
 
 class Timer(object):
     COLON_HEIGHT = 4
@@ -25,6 +25,7 @@ class Timer(object):
     def draw(self):
         for image in self.images:
             if image: image.draw()
+        return []
     
     def update(self):
         self.timer.tick()
