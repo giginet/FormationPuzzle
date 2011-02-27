@@ -8,10 +8,12 @@ from pywaz.sprite.image import Image
 
 
 import numbers
+import pygame
 
 from pygame.rect import Rect
 from pygame.sprite import Sprite
-from pywaz.sprite import OrderedUpdates
+from pygame.sprite import OrderedUpdates
+from pywaz.sprite.image import Image
 from pywaz.core.game import Game
 
 class Number(Sprite):
@@ -23,21 +25,28 @@ class Number(Sprite):
         super(Number, self).__init__()
         self.n = int(n)
         self.pre_n = self.n
-        self.images = OrderedUpdates()
         self.x = x
         self.y = y
         self.filepath = filepath
         self._parse()
         
     def _parse(self):
-        self.images.empty()
+        place = len(str(self.n))
+        self.image = pygame.surface.Surface((self.WIDTH*place+self.OFFSET*(place+1), self.HEIGHT))
+        self.image.set_colorkey((0,0,0))
         for i,s in enumerate(str(self.n)):
             n = int(s)
+            image = Image(self.filepath)
+            dest = pygame.rect.Rect((self.WIDTH+self.OFFSET)*i,0, self.WIDTH, self.HEIGHT)
             area = Rect(n*self.WIDTH, 0, self.WIDTH, self.HEIGHT)
-            self.images.add(Image(self.filepath,area=area,x=self.x+(self.WIDTH+self.OFFSET)*i,y=self.y))
+            self.image.blit(image.image, dest, area)
     
-    def draw(self, surface):
+    def draw(self, surface=Game.get_screen()):
         if self.n != self.pre_n:
             self.pre_n = self.n
             self._parse()
-        return self.images.draw(Game.get_screen())
+        dest = self.image.get_rect().move(self.x, self.y)
+        return surface.blit(self.image, dest=dest)
+    
+    def get_surface(self):
+        return self.image

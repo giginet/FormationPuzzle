@@ -32,7 +32,6 @@ class Gauge(object):
             number.n = int(round(count[i]*100/(settings.STAGE_WIDTH*settings.STAGE_HEIGHT)))
         
     def draw(self):
-        rects = []
-        #rects = self.gauges.draw(Game.get_screen())
-        #rects += self.numbers.draw(Game.get_screen())
+        rects = self.gauges.draw(Game.get_screen())
+        rects += self.numbers.draw(Game.get_screen())
         return rects

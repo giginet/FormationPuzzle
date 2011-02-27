@@ -23,7 +23,6 @@ class Navigation(Singleton):
         self.gauge.update(self.stage.calc_gauge())
     
     def draw(self):
-        rects = []
         rects = self.timer.draw()
-        #rects += self.gauge.draw()
+        rects += self.gauge.draw()
         return rects
