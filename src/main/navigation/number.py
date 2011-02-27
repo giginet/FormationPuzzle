@@ -10,31 +10,34 @@ from pywaz.sprite.image import Image
 import numbers
 
 from pygame.rect import Rect
+from pygame.sprite import Sprite
+from pywaz.sprite import OrderedUpdates
+from pywaz.core.game import Game
 
-class Number(object):
+class Number(Sprite):
     WIDTH = 20
     HEIGHT = 40
     OFFSET = 3
     
     def __init__(self, n, filepath=u'../resources/image/main/navigation/number1.png', x=0, y=0):
+        super(Number, self).__init__()
         self.n = int(n)
         self.pre_n = self.n
-        self.images = []
+        self.images = OrderedUpdates()
         self.x = x
         self.y = y
         self.filepath = filepath
-        for i,s in enumerate(str(self.n)):
-            self.images.append(self._parse(i, int(s)))
+        self._parse()
         
-    def _parse(self, n, i):
-        area = Rect(i*self.WIDTH, 0, self.WIDTH, self.HEIGHT)
-        return Image(self.filepath,area=area,x=self.x+(self.WIDTH+self.OFFSET)*n,y=self.y)
+    def _parse(self):
+        self.images.empty()
+        for i,s in enumerate(str(self.n)):
+            n = int(s)
+            area = Rect(n*self.WIDTH, 0, self.WIDTH, self.HEIGHT)
+            self.images.add(Image(self.filepath,area=area,x=self.x+(self.WIDTH+self.OFFSET)*i,y=self.y))
     
-    def draw(self):
+    def draw(self, surface):
         if self.n != self.pre_n:
             self.pre_n = self.n
-            self.images = []
-            for i,s in enumerate(str(self.n)):
-                self.images.append(self._parse(i, int(s)))
-        for image in self.images:
-            image.draw()
+            self._parse()
+        return self.images.draw(Game.get_screen())

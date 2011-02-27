@@ -15,7 +15,7 @@ ATTACK = {
           'hp':10,
           'attack':10,
           'limit':10,     
-          'frequency':60,
+          'frequency':20,
           'width':60,
           'height':60,
           'image':u'../resources/image/main/unit/attack.png'
@@ -23,8 +23,8 @@ ATTACK = {
 GUARD = {
           'hp':30,
           'attack':1,
-          'limit':1,     
-          'frequency':300,
+          'limit':10,     
+          'frequency':50,
           'width':80,
           'height':20,
           'image':u'../resources/image/main/unit/guard.png'
@@ -33,7 +33,7 @@ SWEEP = {
           'hp':1,
           'attack':5,
           'limit':50,     
-          'frequency':10,
+          'frequency':5,
           'width':60,
           'height':60,
           'image':u'../resources/image/main/unit/sweep.png'

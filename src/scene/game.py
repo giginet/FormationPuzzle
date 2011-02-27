@@ -24,12 +24,9 @@ class GameScene(Scene):
         self.frame = Image(u'../resources/image/main/frame.png', x=settings.STAGE_OFFSET[0]-15, y=settings.STAGE_OFFSET[1]-15)
         self.stage = Stage()
         self.bgm = BGM(u'../resources/bgm/game_intro.wav', -1, u'../resources/bgm/game_loop.wav')
-        self.navigation = Navigation()
-        self.timer = NavigationTimer(160, x=100, y=100)
-        self.timer.play()
         self.background.draw()
         self.frame.draw()
-        self.navigation.background.draw()
+        self.navigation = Navigation(self.stage)
         pygame.display.update()
         
     def update(self):
@@ -38,12 +35,10 @@ class GameScene(Scene):
         self.navigation.update()
         #if not settings.DEBUG: 
         self.bgm.play()
-        self.timer.update()
     
     def draw(self):
         super(GameScene, self).draw()
         if self.stage.redraw_frame(): self.frame.draw() #マップのはじで回転させたとき、回転の軌跡が残ってしまうため、フレームを再描画
         rect_draw = self.stage.draw()
         rect_draw += self.navigation.draw()
-        self.timer.draw()
         return rect_draw

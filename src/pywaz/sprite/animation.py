@@ -103,5 +103,7 @@ class Animation(Image):
     def is_over(self):
         return self.ainfo.frame == self.ainfo.max_frame - 1
     
-    def _rotate(self, dest):
+    def _rotate(self, image, dest, center=None):
+        return self.image, dest
+    def _resize(self, image, dest):
         return self.image, dest

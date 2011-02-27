@@ -9,7 +9,8 @@ from ..utils.vector import Vector
 from math import cos, sin, radians
 class Image(pygame.sprite.Sprite):
     angle = 0
-    scale = 1
+    xscale = 1
+    yscale = 1
     alpha = 255
     
     def __init__(self, filepath, area=None, x=0, y=0):
@@ -41,10 +42,16 @@ class Image(pygame.sprite.Sprite):
         self.image = pygame.image.load(filepath).convert_alpha()
         self.rect = self.image.get_rect()
 
-    def _rotate(self, dest, center=None):
+    def _resize(self, image, dest):
+        if not self.xscale==1 or not self.yscale==1:
+            image = pygame.transform.scale(image, self.xscale, self.yscale)
+            dest = (self.rect.x*self.xscale, self.rect.y*self.yscale) 
+        return image, dest
+    
+    def _rotate(self, image, dest, center=None):
         if not center: center = self.center
-        if not self.angle == 0 or not self.scale == 1:
-            image = pygame.transform.rotozoom(self.image, self.angle, self.scale)
+        if not self.angle == 0:
+            image = pygame.transform.rotate(image, self.angle)
             srcc = Vector(self.image.get_size())*0.5
             radius = (srcc-center).length
             from math import atan2 
@@ -71,5 +78,6 @@ class Image(pygame.sprite.Sprite):
         if not dest: dest = self.rect
         if not area: area = self.area
         if not self.alpha == 255: image.set_alpha(self.alpha)
-        image, dest = self._rotate(dest)
+        image, dest = self._rotate(image,dest)
+        image, dest = self._resize(image, dest)
         return surface.blit(image, dest, area=area)

@@ -4,20 +4,26 @@ from pywaz.sprite import OrderedUpdates
 from pywaz.core.game import Game
 
 from main.navigation.timer import Timer as NavigationTimer
-
+from main.navigation.gauge import Gauge
 
 class Navigation(Singleton):
-    X = 690
-    Y = 30
+    X = 675
+    Y = 20
     
-    def __init__(self):
+    def __init__(self, stage):
         self.background = Image(u'../resources/image/main/navigation/background.png',x=self.X, y=self.Y)
-        self.timer = NavigationTimer(120, x=50+self.X, y=80+self.Y)
+        self.background.draw() 
+        self.timer = NavigationTimer(75, x=74+self.X, y=178+self.Y)
         self.timer.play()
+        self.stage = stage
+        self.gauge = Gauge(x=self.X+10, y=self.Y+5)
     
     def update(self):
         self.timer.update()
+        self.gauge.update(self.stage.calc_gauge())
     
     def draw(self):
+        rects = []
         rects = self.timer.draw()
+        #rects += self.gauge.draw()
         return rects
