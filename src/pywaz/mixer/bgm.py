@@ -7,8 +7,9 @@
 import pygame
 
 from pygame.mixer import music
+from pywaz.utils.singleton import Singleton
 
-class BGM(object):
+class BGM(Singleton):
     def __init__(self, filename, loop=0, loopfile=None):
         self._set(filename, loop, loopfile)
         self._reset()

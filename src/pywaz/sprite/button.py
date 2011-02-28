@@ -13,40 +13,51 @@ class Button(Animation):
     hover_image = True
     press_image = True
     
-    def __init__(self, filepath, x=0, y=0, w=0, h=0):
+    def __init__(self, filepath, w, h, x=0, y=0):
         super(Button, self).__init__(filepath, AnimationInfo(0,0,1,w,h), x=x, y=y)
-        image_height = self.image.get_rect()[1]
-        if int(image_height/h) == 0:
+        image_height = self.image.get_size()[1]
+        if int(image_height/h) == 1:
             self.hover_image = False
             self.press_image = False
-        elif int(image_height%h) == 1:
+        elif int(image_height/h) == 2:
             self.press_image = False
     
-    def on_mouseout(self):
+    def _on_mouseout(self):
         self.ainfo.index = 0
+        self.on_mouseout()
     
-    def on_mouseover(self):
+    def _on_mouseover(self):
         if self.hover_image: self.ainfo.index = 1
+        self.on_mouseover()
     
-    def on_press(self):
+    def _on_press(self):
         if self.press_image: self.ainfo.index = 2
+        self.on_press()
     
-    def on_release(self):
+    def _on_release(self):
         self.ainfo.index = 0
+        self.on_release()
+        
+    def on_mouseout(self, *args, **kwargs):pass
+    def on_mouseover(self, *args, **kwargs):pass
+    def on_press(self, *args, **kwargs):pass
+    def on_release(self, *args, **kwargs):pass
     
     def update(self):
         if self.hit_area.collidepoint(Mouse.get_pos()):
             if not self.hovered:
-                self.on_mouseover()
+                self._on_mouseover()
             self.hovered = True
             if Mouse.is_press('LEFT'):
-                self.pressed = True
+                if not self.pressed:
+                    self._on_press()
+                    self.pressed = True
             else:
-                self.pressed = False
+                if self.pressed:
+                    self._on_release()
+                    self.pressed = False
         else:
-            if self.pressed:
-                self.on_release()
             if self.hovered:
-                self.mouseout()
+                self._on_mouseout()
             self.pressed = False
             self.hovered = False

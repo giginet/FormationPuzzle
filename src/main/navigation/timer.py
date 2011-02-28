@@ -66,3 +66,6 @@ class Timer(pygame.sprite.Sprite):
     def convert_time(self):
         n = (self.timer.max - self.timer.now)/settings.FRAMERATE
         return int(n/60), n%60    
+    
+    def is_over(self):
+        return self.timer.is_over()

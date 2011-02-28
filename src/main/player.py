@@ -26,7 +26,6 @@ class Player(Image):
         self.x, self.y = local_to_global(self.initial_position[n]).to_pos()
         super(Player, self).__init__(u'../resources/image/main/player/cursor.png', area=pygame.rect.Rect(0,n*40,40,40),x=100, y=100)
         self.animation_enable = False
-        Mouse.hide_cursor()
         
     def update(self):
         if self.number == 0:

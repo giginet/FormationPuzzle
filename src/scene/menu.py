@@ -34,7 +34,9 @@ class LogoScene(Scene):
 class TitleScene(Scene):
     def ready(self):
         self.bgm = BGM(u'../resources/bgm/title_intro.wav', -1, u'../resources/bgm/title_loop.wav')
+        self.sprites.add(Image(u'../resources/image/menu/background.png'))
+        self.bgm.play()
         
     def update(self):
-        self.bgm.play()
+        pass
         

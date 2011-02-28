@@ -1,4 +1,5 @@
 import pygame
+import settings
 
 from pywaz.utils.singleton import Singleton
 from pywaz.sprite.image import Image
@@ -18,10 +19,11 @@ class Navigation(Singleton):
         self.background = Image(u'../resources/image/main/navigation/background.png')
         self.background.draw(self.image)
         self.contents = OrderedUpdates()
-        self.timer = NavigationTimer(75, x=46, y=82)
+        self.timer = NavigationTimer(settings.TIME, x=46, y=82)
         self.timer.play()
         self.stage = stage
         self.gauge = Gauge(x=10, y=5)
+        self.update()
     
     def update(self):
         self.timer.update()

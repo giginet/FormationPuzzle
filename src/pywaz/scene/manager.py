@@ -4,8 +4,8 @@
 #    Created by giginet
 #
 class SceneManager(object):
-    def __init__(self):
-        self._scenes_dict = {}
+    def __init__(self, scenes={}):
+        self._scenes_dict = scenes
         self._current_scene = None
         
     def set_scene(self, dict):

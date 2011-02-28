@@ -6,16 +6,13 @@
 import settings
 import pygame
 
-from pywaz.scene.abstractscene import Scene
-from pywaz.core.game import Game
 from pywaz.sprite.image import Image
 from pywaz.mixer.bgm import BGM
-from pywaz.utils.vector import Vector
-from pywaz.utils.timer import Timer
-from pywaz.device.mouse import Mouse
+from pywaz.scene.manager import SceneManager
+from pywaz.scene.abstractscene import Scene
+from main.sequences import ReadySequence, MainSequence, ResultSequence, PauseSequence
 
 from main.stage import Stage
-from main.navigation.timer import Timer as NavigationTimer
 from main.navigation import Navigation
 
 class GameScene(Scene):
@@ -27,18 +24,20 @@ class GameScene(Scene):
         self.background.draw()
         self.frame.draw()
         self.navigation = Navigation(self.stage)
-        pygame.display.update()
+        self.sequence_mng = SceneManager({'ready':ReadySequence(),'main': MainSequence(self.stage, self.navigation), 'result':ResultSequence(), 'pause':PauseSequence()})
+        self.sequence_mng.change_scene('ready')
         
     def update(self):
         super(GameScene, self).update()
-        self.stage.update()
-        self.navigation.update()
         #if not settings.DEBUG: 
         self.bgm.play()
-    
+        next = self.sequence_mng.current_scene.update()
+        if next: self.sequence_mng.change_scene(next)
+        
     def draw(self):
         super(GameScene, self).draw()
         if self.stage.redraw_frame(): self.frame.draw() #マップのはじで回転させたとき、回転の軌跡が残ってしまうため、フレームを再描画
         rect_draw = self.stage.draw()
         rect_draw += self.navigation.draw()
+        rect_draw += self.sequence_mng.current_scene.draw()
         return rect_draw
