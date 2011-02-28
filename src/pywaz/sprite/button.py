@@ -10,21 +10,29 @@ class Button(Animation):
     pressed = False
     hovered = False
     animation_enable = False
+    hover_image = True
+    press_image = True
     
     def __init__(self, filepath, x=0, y=0, w=0, h=0):
         super(Button, self).__init__(filepath, AnimationInfo(0,0,1,w,h), x=x, y=y)
+        image_height = self.image.get_rect()[1]
+        if int(image_height/h) == 0:
+            self.hover_image = False
+            self.press_image = False
+        elif int(image_height%h) == 1:
+            self.press_image = False
     
     def on_mouseout(self):
         self.ainfo.index = 0
     
     def on_mouseover(self):
-        self.ainfo.index = 1
+        if self.hover_image: self.ainfo.index = 1
     
     def on_press(self):
-        self.ainfo.index = 2
+        if self.press_image: self.ainfo.index = 2
     
     def on_release(self):
-        self.ainfo.index = 3
+        self.ainfo.index = 0
     
     def update(self):
         if self.hit_area.collidepoint(Mouse.get_pos()):
