@@ -1,3 +1,5 @@
+import pygame
+
 from pywaz.utils.singleton import Singleton
 from pywaz.sprite.image import Image
 from pywaz.sprite import OrderedUpdates
@@ -11,19 +13,22 @@ class Navigation(Singleton):
     Y = 20
     
     def __init__(self, stage):
-        self.background = Image(u'../resources/image/main/navigation/background.png',x=self.X, y=self.Y)
-        self.background.draw() 
+        self.image = pygame.surface.Surface((98,558))
+        self.image.set_colorkey((0,0,0))
+        self.background = Image(u'../resources/image/main/navigation/background.png')
+        self.background.draw(self.image)
         self.contents = OrderedUpdates()
-        self.timer = NavigationTimer(75, x=74+self.X, y=178+self.Y)
+        self.timer = NavigationTimer(75, x=46, y=82)
         self.timer.play()
         self.stage = stage
-        self.gauge = Gauge(x=self.X+10, y=self.Y+5)
+        self.gauge = Gauge(x=10, y=5)
     
     def update(self):
         self.timer.update()
         self.gauge.update(self.stage.calc_gauge())
     
     def draw(self):
-        rects = self.timer.draw()
-        rects += self.gauge.draw()
-        return rects
+        rects = self.timer.draw(self.image)
+        rects += self.gauge.draw(self.image)
+        Game.get_screen().blit(self.image, self.image.get_rect().move(self.X, self.Y))
+        return []

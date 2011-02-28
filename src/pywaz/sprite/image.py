@@ -44,8 +44,15 @@ class Image(pygame.sprite.Sprite):
 
     def _resize(self, image, dest):
         if not self.xscale==1 or not self.yscale==1:
-            image = pygame.transform.scale(image, self.xscale, self.yscale)
-            dest = (self.rect.x*self.xscale, self.rect.y*self.yscale) 
+            before = Vector(self.image.get_size())
+            image = pygame.transform.scale(image, (self.xscale*self.rect.width, self.yscale*self.rect.height))
+            after = Vector(image.get_size())
+            sub = (before-after)
+            sub.x *= self.center.x/self.rect.w
+            sub.y *= self.center.y/self.rect.h
+            self.rect.x += sub.x
+            self.rect.y += sub.y
+            dest = (self.rect.x, self.rect.y)
         return image, dest
     
     def _rotate(self, image, dest, center=None):

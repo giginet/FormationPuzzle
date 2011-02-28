@@ -29,12 +29,12 @@ class Number(Sprite):
         self.x = x
         self.y = y
         self.filepath = filepath
-        place = len(str(self.n))
-        self.image = pygame.surface.Surface((self.WIDTH*place+self.OFFSET*(place+1), self.HEIGHT))
-        self.image.set_colorkey((0,0,0))
         self._parse()
         
     def _parse(self):
+        place = len(str(self.n))
+        self.image = pygame.surface.Surface((self.WIDTH*place+self.OFFSET*place, self.HEIGHT))
+        self.image.set_colorkey((0,0,0))
         dest = self.image.get_rect().move(self.x, self.y)
         area = dest
         self.image.blit(settings.BACKGROUND.image, dest, area)
