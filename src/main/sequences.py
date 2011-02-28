@@ -22,6 +22,7 @@ class ReadySequence(Scene, Singleton):
         self.timer = Timer(240)
     
     def ready(self):
+        BGM.set_volume(0.4)
         self.timer.play()
     
     def update(self):
@@ -29,6 +30,7 @@ class ReadySequence(Scene, Singleton):
         if self.timer.now == 30:
             self.string.ainfo.index = 0
         elif self.timer.now == 60:
+            BGM.set_volume(1)
             self.string.ainfo.index = 1
         elif 60 < self.timer.now < 70:
             self.string.y -= 30

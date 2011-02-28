@@ -35,7 +35,6 @@ class Button(Animation):
         self.on_press()
     
     def _on_release(self):
-        self.ainfo.index = 0
         self.on_release()
         
     def on_mouseout(self, *args, **kwargs):pass

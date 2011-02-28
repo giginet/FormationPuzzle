@@ -16,7 +16,7 @@ class Scene(object):
         self.sprites = OrderedUpdates()
     
     def ready(self):
-        raise NotImplementedError
+        Game.get_screen().fill(self.BACKGROUND)
     
     def update(self, *args, **kwargs):
         self.sprites.update(*args, **kwargs)

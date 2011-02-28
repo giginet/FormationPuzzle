@@ -59,3 +59,7 @@ class BGM(Singleton):
     def fadeout(self, msec):
         music.fadeout(msec)
         self.stop = True
+    
+    @staticmethod
+    def set_volume(volume):
+        music.set_volume(volume)

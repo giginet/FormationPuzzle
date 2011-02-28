@@ -36,3 +36,6 @@ class SceneManager(object):
     def draw(self):
         if not self.is_empty():
             return self.current_scene.draw()
+        
+    def exit(self):
+        self._current_scene = None

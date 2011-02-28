@@ -13,7 +13,7 @@ class Image(pygame.sprite.Sprite):
     yscale = 1
     alpha = 255
     
-    def __init__(self, filepath, area=None, x=0, y=0):
+    def __init__(self, filepath, area=None, x=0, y=0, alpha=True):
         u"""Constructor of Sprite class
 
         Argument:
@@ -21,7 +21,7 @@ class Image(pygame.sprite.Sprite):
             area        - represents a smaller portion of the source to draw
         """
         super(Image, self).__init__()
-        self.change_image(filepath)
+        self.change_image(filepath, alpha)
         self.rect.x = x
         self.rect.y = y
         self.area = area
@@ -38,8 +38,11 @@ class Image(pygame.sprite.Sprite):
         h = self.hit.h
         return pygame.Rect(x, y, w, h)
 
-    def change_image(self, filepath):
-        self.image = pygame.image.load(filepath).convert_alpha()
+    def change_image(self, filepath, alpha=True):
+        if alpha:
+            self.image = pygame.image.load(filepath).convert_alpha()
+        else:
+            self.image = pygame.image.load(filepath).convert()
         self.rect = self.image.get_rect()
 
     def _resize(self, image, dest):

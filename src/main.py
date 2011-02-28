@@ -30,6 +30,7 @@ def main():
         game._clock.tick(settings.FPS)
         Key.poll()
         scene = game.current_scene()
+        if not scene: return
         scene.sprites.clear(game.get_screen(), scene.BACKGROUND_SURFACE)
         game.update()
         rects = game.draw()
