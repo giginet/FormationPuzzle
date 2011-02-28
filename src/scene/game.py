@@ -24,7 +24,10 @@ class GameScene(Scene):
         self.background.draw()
         self.frame.draw()
         self.navigation = Navigation(self.stage)
-        self.sequence_mng = SceneManager({'ready':ReadySequence(),'main': MainSequence(self.stage, self.navigation), 'result':ResultSequence(), 'pause':PauseSequence()})
+        self.sequence_mng = SceneManager({'ready':ReadySequence(self.frame, self.background),
+                                          'main': MainSequence(self.stage, self.navigation), 
+                                          'result':ResultSequence(self.navigation, self.frame), 
+                                          'pause':PauseSequence()})
         self.sequence_mng.change_scene('ready')
         
     def update(self):
@@ -32,7 +35,9 @@ class GameScene(Scene):
         #if not settings.DEBUG: 
         self.bgm.play()
         next = self.sequence_mng.current_scene.update()
-        if next: self.sequence_mng.change_scene(next)
+        if next: 
+            #self.background.draw()
+            self.sequence_mng.change_scene(next)
         
     def draw(self):
         super(GameScene, self).draw()

@@ -13,8 +13,10 @@ from pywaz.utils.timer import Timer
 from pywaz.device.mouse import Mouse
 
 class ReadySequence(Scene, Singleton):
-    def __init__(self):
+    def __init__(self, frame, background):
         super(ReadySequence, self).__init__()
+        self.frame = frame
+        self.background = background
         self.string = Animation(u'../resources/image/main/strings.png',AnimationInfo(-1,0,0,360,210,0),x=220, y=195)
         self.string.animation_enable = False
         self.timer = Timer(240)
@@ -31,6 +33,8 @@ class ReadySequence(Scene, Singleton):
         elif 60 < self.timer.now < 70:
             self.string.y -= 30
         elif self.timer.now == 70:
+            self.background.draw()
+            self.frame.draw()
             return 'main'
         
     def draw(self):
@@ -55,9 +59,11 @@ class MainSequence(Scene, Singleton):
 from main.result import Result
 from pywaz.mixer.bgm import BGM
 class ResultSequence(Scene, Singleton):
-    def __init__(self):
+    def __init__(self, navigation, frame):
         super(ResultSequence,self).__init__()
-        self.window = Result()
+        self.navigation = navigation
+        self.frame = frame
+        self.window = Result(navigation)
         
     def ready(self):
         Mouse.show_cursor()
@@ -68,6 +74,7 @@ class ResultSequence(Scene, Singleton):
         self.window.update()
     
     def draw(self):
+        self.frame.draw()
         self.window.draw()
         return []
 

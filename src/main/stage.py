@@ -20,13 +20,12 @@ from main.unitmanager import UnitManager
 
 
 class Stage(Singleton):
-    players = OrderedUpdates(Player(0), Player(1))
-    panelsets = [] #回転中のPanelSet
     
     def __init__(self):
         self.chips = OrderedUpdates()
         self._map = []
         self.unitmng = UnitManager(self)
+        self.unitmng.reset()
         for y in xrange(settings.STAGE_HEIGHT):
             column = []
             for x in xrange(settings.STAGE_WIDTH):
@@ -38,6 +37,9 @@ class Stage(Singleton):
                 self.chips.add(panel)
             self._map.append(column)
         self._map = map(list, zip(*self._map)) #transpose matrix
+        self.players = OrderedUpdates(Player(0), Player(1))
+        self.panelsets = [] #回転中のPanelSet
+    
         
     def update(self):
         for player in self.players:

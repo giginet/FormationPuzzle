@@ -16,10 +16,12 @@ from main.unit.guard import Guard
 from main.unit.sweep import Sweep
 
 class UnitManager(Singleton):
-    units = []
-    images = OrderedUpdates()
     def __init__(self, stage):
         self.stage = stage
+        self.reset()
+    def reset(self):
+        self.units = []
+        self.images = OrderedUpdates()
     def remove(self, unit):
         unit.disappear()
         self.images.remove(unit.image)

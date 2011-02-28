@@ -52,7 +52,9 @@ class Timer(pygame.sprite.Sprite):
         timer_surface.blit(second1, second1.get_rect().move(0, self.HEIGHT*2+self.COLON_HEIGHT+self.OFFSET*3))
         self.image.blit(settings.BACKGROUND.image, self.gauge.image.get_rect(), self.gauge.image.get_rect().move(self.x, self.y))
         self.image.blit(timer_surface, timer_surface.get_rect().move(28,96))
-        self.gauge.yscale = float(self.timer.max-self.timer.now)/float(self.timer.max)
+        max = int(self.timer.max/settings.FRAMERATE)-1
+        now = int(self.timer.now/settings.FRAMERATE)
+        self.gauge.yscale = float(max-now)/float(max)
         self.gauge.draw(self.image)
         
     def update(self):
