@@ -20,7 +20,7 @@ from main.navigation import Navigation
 
 class GameScene(Scene):
     def ready(self):
-        self.background = Image(u'../resources/image/main/background.png')
+        self.background = settings.BACKGROUND
         self.frame = Image(u'../resources/image/main/frame.png', x=settings.STAGE_OFFSET[0]-15, y=settings.STAGE_OFFSET[1]-15)
         self.stage = Stage()
         self.bgm = BGM(u'../resources/bgm/game_intro.wav', -1, u'../resources/bgm/game_loop.wav')

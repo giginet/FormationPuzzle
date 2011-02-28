@@ -29,9 +29,12 @@ class Gauge(object):
             count tuple
         """
         for i, number in enumerate(self.numbers):
-            number.n = int(round(count[i]*100/(settings.STAGE_WIDTH*settings.STAGE_HEIGHT)))
-        
+            if i==0:
+                number.n = int(count[0]*100/(settings.STAGE_WIDTH*settings.STAGE_HEIGHT))
+            else:
+                number.n = 100 - int(count[0]*100/(settings.STAGE_WIDTH*settings.STAGE_HEIGHT))
     def draw(self):
+        #self.numbers.clear(Game.get_screen(), settings.BACKGROUND.image)
         rects = self.gauges.draw(Game.get_screen())
         rects += self.numbers.draw(Game.get_screen())
         return rects

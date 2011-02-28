@@ -24,6 +24,8 @@ class Timer(pygame.sprite.Sprite):
         self.y = y
         self.timer = _Timer(max*settings.FRAMERATE)
         self.pre_second = 0
+        self.image = pygame.surface.Surface((self.WIDTH,self.HEIGHT*3+self.COLON_HEIGHT+self.OFFSET*3)).convert()
+        self.image.set_colorkey((0,0,0))
         self._parse(self.convert_time())
     
     def draw(self, surface=Game.get_screen()):
@@ -32,8 +34,6 @@ class Timer(pygame.sprite.Sprite):
     def _parse(self, time):
         minute = time[0]
         second = time[1]
-        self.image = pygame.surface.Surface((self.WIDTH,self.HEIGHT*3+self.COLON_HEIGHT+self.OFFSET*3))
-        self.image.set_colorkey(self.image.get_at((0,0)))
         minute_surface = Number(minute, u'../resources/image/main/navigation/time.png').get_surface()
         self.image.blit(minute_surface, minute_surface.get_rect())
         self.pre_second = second

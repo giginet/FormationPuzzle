@@ -13,6 +13,7 @@ class Navigation(Singleton):
     def __init__(self, stage):
         self.background = Image(u'../resources/image/main/navigation/background.png',x=self.X, y=self.Y)
         self.background.draw() 
+        self.contents = OrderedUpdates()
         self.timer = NavigationTimer(75, x=74+self.X, y=178+self.Y)
         self.timer.play()
         self.stage = stage
