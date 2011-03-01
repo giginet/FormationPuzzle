@@ -60,9 +60,7 @@ class UnitManager(Singleton):
     def battle(self, a, b):
         u"""ユニットaがユニットbを攻撃する"""
         b.hp -= a.attack
-        print u"""%dのダメージ""" % a.attack
         if b.hp <= 0:
-            print u"""敵ユニットをやっつけた！"""
             self.remove(b)
         #ToDo エフェクト
         Sound(u'../resources/sound/battle_%s.wav' % a.name).play()

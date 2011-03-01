@@ -14,6 +14,7 @@ from main.sequences import ReadySequence, MainSequence, ResultSequence, PauseSeq
 
 from main.stage import Stage
 from main.navigation import Navigation
+from main.effect import Effect
 
 class GameScene(Scene):
     def ready(self, *args, **kwargs):
@@ -33,6 +34,7 @@ class GameScene(Scene):
             else: return 'ready'
         self.sequence_mng.change_scene(init())
         self.redraw = False
+        Effect.reset()
         
     def update(self):
         super(GameScene, self).update()

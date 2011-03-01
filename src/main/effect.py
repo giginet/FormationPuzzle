@@ -17,3 +17,7 @@ class Effect(Animation):
         super(Effect, self).update()
         if self.is_over():
             self.effects.remove(self)
+            
+    @classmethod
+    def reset(cls):
+        cls.effects.empty()

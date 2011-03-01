@@ -79,14 +79,8 @@ class Animation(Image):
         y = self.ainfo.index * h
         return pygame.Rect(x, y, w, h)
     
-    def draw(self, surface=Game.get_screen(), dest=None, special_flags = 0):
-        u"""Draw this sprite to the surface and animate
-
-        Attribute:
-            surface     - the target surface
-            dest        - the `Rect` of where to draw on the surface
-        """
-        updated_rect = super(Animation, self).draw(surface, dest, self.draw_area, special_flags)
+    def update(self):
+        super(Animation, self).update()
         if self.animation_enable:
             self.animation_wait.tick()
             if self.animation_wait.is_over():
@@ -98,6 +92,16 @@ class Animation(Image):
                 if frame == 0:
                     if self.on_animation_over: self.on_animation_over(self)
                 self.animation_wait.reset().play()
+        
+    
+    def draw(self, surface=Game.get_screen(), dest=None, special_flags = 0):
+        u"""Draw this sprite to the surface and animate
+
+        Attribute:
+            surface     - the target surface
+            dest        - the `Rect` of where to draw on the surface
+        """
+        updated_rect = super(Animation, self).draw(surface, dest, self.draw_area, special_flags)
         return updated_rect
     
     def is_over(self):

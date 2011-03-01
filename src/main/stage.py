@@ -28,7 +28,6 @@ class Stage(Singleton):
         self._map = []
         self.unitmng = UnitManager(self)
         self.unitmng.reset()
-        self.effects = OrderedUpdates()
         for y in xrange(settings.STAGE_HEIGHT):
             column = []
             for x in xrange(settings.STAGE_WIDTH):

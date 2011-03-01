@@ -57,16 +57,27 @@ class MainSequence(Scene, Singleton):
     def ready(self, *args, **kwargs):
         self.navigation.timer.play()
         self.press_pause = True
+        self.crisis = False
         
     def update(self):
         super(MainSequence, self).update()
         self.stage.update()
         self.navigation.update()
+        u"""ポーズへの移行"""
         if not Key.is_press(K_RETURN):
             self.press_pause = False
         if not self.press_pause and Key.is_press(K_RETURN): 
             Sound(u'../resources/sound/pause.wav').play()
             return 'pause'
+        u"""リミットの9割に達したとき、音を鳴らす"""
+        crisis = (settings.STAGE_WIDTH*settings.STAGE_HEIGHT)*settings.CALLED*0.9
+        if self.stage.count[0] > crisis or self.stage.count[1] > crisis: 
+            if not self.crisis:
+                self.crisis = True
+                print "crisis!"
+                Sound(u'../resources/sound/area_crisis.wav').play()
+        else: self.crisis = False
+        u"""ゲーム終了判定"""
         called = (settings.STAGE_WIDTH*settings.STAGE_HEIGHT)*settings.CALLED
         if self.stage.count[0] > called or self.stage.count[1] > called: return 'result' 
         if self.navigation.timer.is_over(): return 'result'
@@ -97,6 +108,7 @@ class ResultSequence(Scene, Singleton):
 
 class PauseSequence(Scene, Singleton):
     def ready(self, *args, **kwargs):
+        BGM.set_volume(0.4)
         self.press = True
         Mouse.show_cursor()
         self.string = Animation(u'../resources/image/main/strings.png',AnimationInfo(3,0,0,360,210,0),x=220, y=195)
@@ -110,4 +122,5 @@ class PauseSequence(Scene, Singleton):
             self.press = False
         if not self.press and Key.is_press(K_RETURN):
             Sound(u'../resources/sound/pause.wav').play()
+            BGM.set_volume(1)
             return 'main'

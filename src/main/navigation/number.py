@@ -18,12 +18,11 @@ from pywaz.sprite.image import Image
 from pywaz.core.game import Game
 
 class Number(Sprite):
-    WIDTH = 20
-    HEIGHT = 40
-    OFFSET = 3
-    
-    def __init__(self, n, filepath=u'../resources/image/main/navigation/number1.png', x=0, y=0):
+    def __init__(self, n, filepath=u'../resources/image/main/navigation/number1.png', x=0, y=0, w=20, h=40, offset=3):
         super(Number, self).__init__()
+        self.width = w
+        self.height = h
+        self.offset = offset
         self.n = int(n)
         self.pre_n = self.n
         self.x = x
@@ -33,7 +32,7 @@ class Number(Sprite):
         
     def _parse(self):
         place = len(str(self.n))
-        self.image = pygame.surface.Surface((self.WIDTH*place+self.OFFSET*place, self.HEIGHT))
+        self.image = pygame.surface.Surface((self.width*place+self.offset*place, self.height))
         self.image.set_colorkey((0,0,0))
         dest = self.image.get_rect().move(self.x, self.y)
         area = dest
@@ -41,8 +40,8 @@ class Number(Sprite):
         for i,s in enumerate(str(self.n)):
             n = int(s)
             image = Image(self.filepath)
-            dest = pygame.rect.Rect((self.WIDTH+self.OFFSET)*i,0, self.WIDTH, self.HEIGHT)
-            area = Rect(n*self.WIDTH, 0, self.WIDTH, self.HEIGHT)
+            dest = pygame.rect.Rect((self.width+self.offset)*i,0, self.width, self.height)
+            area = Rect(n*self.width, 0, self.width, self.height)
             self.image.blit(image.image, dest, area)
     
     def draw(self, surface=Game.get_screen()):
