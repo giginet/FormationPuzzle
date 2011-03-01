@@ -28,15 +28,16 @@ class GameScene(Scene):
                                           'main': MainSequence(self.stage, self.navigation), 
                                           'result':ResultSequence(self.navigation, self.frame), 
                                           'pause':PauseSequence()})
-        self.sequence_mng.change_scene('ready')
+        def init():
+            if settings.DEBUG: return 'main'
+            else: return 'ready'
+        self.sequence_mng.change_scene(init())
         
     def update(self):
         super(GameScene, self).update()
-        #if not settings.DEBUG: 
         self.bgm.play()
         next = self.sequence_mng.current_scene.update()
         if next: 
-            #self.background.draw()
             self.sequence_mng.change_scene(next)
         
     def draw(self):

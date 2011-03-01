@@ -37,5 +37,7 @@ class Sweep(Unit):
             v = LocalPoint(0,1-2*owner)
             p = self.stage.get_panel(panel.point+v)
             while not isinstance(p, DummyPanel):
-                if p.owner != owner: p.change_owner(owner)
+                if p.owner != owner: 
+                    p.change_owner(owner)
+                    p.set_disable(True)
                 p = self.stage.get_panel(p.point+v)

@@ -22,13 +22,17 @@ class Bomb(Unit):
         return None
     
     def disappear(self):
+        if not self.stage.bomb: return
         owner = self.panels[0].owner
         for i, player in enumerate(self.stage.players):
             if i != owner:
-                lp = player.get_local_point()
+                lp = player.point
                 break
-        self.stage.get_panel(lp).set_disable(True)
-        self.stage.get_panel(lp+LocalPoint(0,1)).set_disable(True)
-        self.stage.get_panel(lp+LocalPoint(1,1)).set_disable(True)
-        self.stage.get_panel(lp+LocalPoint(1,0)).set_disable(True)
+        targets = (self.stage.get_panel(lp),
+        self.stage.get_panel(lp+LocalPoint(0,1)),
+        self.stage.get_panel(lp+LocalPoint(1,1)),
+        self.stage.get_panel(lp+LocalPoint(1,0)))
+        for target in targets:
+            target.change_owner(owner)
+            target.set_disable(True)
         super(Bomb, self).disappear()

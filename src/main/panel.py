@@ -52,7 +52,8 @@ class Panel(Image):
         color = random.randint(0,3)
         if not self.color == color:
             self.color = color
-            self.change_image("../resources/image/main/panel/panel%d_%d.png" % (self.owner, self.color))
+            if not self.disable:
+                self.change_image("../resources/image/main/panel/panel%d_%d.png" % (self.owner, self.color))
     def set_disable(self, disable):
         if not self.disable == disable:
             self.disable = disable
@@ -74,7 +75,7 @@ class PanelSet(object):
         """
         self.degree = degree
         self.panels = panels
-        self.timer = Timer(7)
+        self.timer = Timer(settings.ROTATE_SPEED)
         panels[0].center = Vector(settings.PANELSIZE,settings.PANELSIZE)
         panels[1].center = Vector(0, settings.PANELSIZE)
         panels[2].center = Vector(0,0)

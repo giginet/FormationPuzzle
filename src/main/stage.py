@@ -20,7 +20,8 @@ from main.unitmanager import UnitManager
 
 
 class Stage(Singleton):
-    def __init__(self):
+    def __init__(self, bomb=True):
+        self.bomb = bomb
         self.chips = OrderedUpdates()
         self._map = []
         self.unitmng = UnitManager(self)
@@ -46,13 +47,13 @@ class Stage(Singleton):
             player.update()
             press = player.poll()
             if press:
-                lp = player.get_local_point()
+                lp = player.point
                 panels = (self.get_panel(lp),self.get_panel(lp+LocalPoint(1,0)),self.get_panel(lp+LocalPoint(1,1)),self.get_panel(lp+LocalPoint(0,1)))
-                for p in panels:
-                    if p.unit:
-                        self.unitmng.remove(self.unitmng.get_unit_by_panel(p))
-                        break
-                if self.can_rotation(panels):
+                if self.can_rotation(panels, player.number):
+                    for p in panels:
+                        if p.unit:
+                            self.unitmng.remove(self.unitmng.get_unit_by_panel(p))
+                            break
                     self.panelsets.append(PanelSet(panels, press))
         for i,ps in enumerate(self.panelsets):
             if ps.is_over():
@@ -121,8 +122,9 @@ class Stage(Singleton):
             self.swap(panels[2], panels[3])
         for panel in panels: panel.angle = 0
     
-    def can_rotation(self, panels):
+    def can_rotation(self, panels, player):
         owner = panels[0].owner
+        if not owner is player: return False
         for panel in panels:
             if not panel.can_rotate(): return False
             if panel.owner != owner: return False

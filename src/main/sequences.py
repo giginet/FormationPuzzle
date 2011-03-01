@@ -43,6 +43,7 @@ class ReadySequence(Scene, Singleton):
         self.string.draw()
         return []
 
+import settings
 class MainSequence(Scene, Singleton):
     def __init__(self, stage, navigation):
         super(MainSequence, self).__init__()
@@ -56,6 +57,8 @@ class MainSequence(Scene, Singleton):
         super(MainSequence, self).update()
         self.stage.update()
         self.navigation.update()
+        called = (settings.STAGE_WIDTH*settings.STAGE_HEIGHT)*settings.CALLED
+        if self.stage.count[0] > called or self.stage.count[1] > called: return 'result' 
         if self.navigation.timer.is_over(): return 'result'
 
 from main.result import Result
