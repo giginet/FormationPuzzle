@@ -57,11 +57,15 @@ class Panel(Image):
         if not self.disable == disable:
             self.disable = disable
             if disable:
-                self.disable_timer.stop()
-                self.change_image(u"../resources/image/main/panel/gray.png")
-            else:
                 self.disable_timer.play()
+                self.change_image(u"../resources/image/main/panel/disable.png")
+            else:
+                self.disable_timer.stop()
                 self.change_image(u"../resources/image/main/panel/panel%d_%d.png" % (self.owner, self.color)) 
+    def rotate(self):
+        if self.disable:
+            self.disable_timer.move(5)
+
 class PanelSet(object):
     def __init__(self, panels, degree=0):
         u"""
@@ -75,6 +79,7 @@ class PanelSet(object):
         panels[1].center = Vector(0, settings.PANELSIZE)
         panels[2].center = Vector(0,0)
         panels[3].center = Vector(settings.PANELSIZE,0)
+        map(lambda panel: panel.rotate(), self.panels)
         self.timer.play()
     def update(self):
         self.timer.tick()

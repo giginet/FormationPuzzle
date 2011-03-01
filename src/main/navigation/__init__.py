@@ -27,7 +27,7 @@ class Navigation(Singleton):
     
     def update(self):
         self.timer.update()
-        self.gauge.update(self.stage.calc_gauge())
+        self.gauge.update(self.stage.count)
     
     def draw(self):
         rects = self.timer.draw(self.image)

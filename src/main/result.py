@@ -18,12 +18,14 @@ class Result(Singleton):
         self.player2 = Image(u'../resources/image/main/result/2p.png', x=583, y=40)
         self.gauge1 = Image(u'../resources/image/main/result/gauge1_full.png', x=63, y=180)
         self.gauge2 = Image(u'../resources/image/main/result/gauge2_full.png', x=63, y=180)
-        self.gauge1.xscale = float(self.navigation.gauge.proportion[0])/100
         self.retry = Button(u'../resources/image/main/result/retry.png', w=180, h=80, x=143, y=460)
         self.menu = Button(u'../resources/image/main/result/menu.png', w=180, h=80, x=443, y=460)
         self.sprites = OrderedUpdates(self.player1, self.player2, self.gauge2, self.gauge1, self.retry, self.menu)
         self.retry.on_release = lambda : Game.get_scene_manager().change_scene('game')
         self.menu.on_release = lambda : Game.get_scene_manager().change_scene('title')
+    def ready(self):
+        self.gauge1.xscale = float(self.navigation.gauge.proportion[0])/100
+        
     def draw(self, surface=Game.get_screen()):
         self.background.draw()
         self.navigation.background.draw(self.navigation.image)

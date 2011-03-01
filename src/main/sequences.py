@@ -71,6 +71,7 @@ class ResultSequence(Scene, Singleton):
         Mouse.show_cursor()
         self.bgm = BGM(u'../resources/bgm/result_intro.wav', -1, u'../resources/bgm/result_loop.wav')
         self.bgm.play()
+        self.window.ready()
     
     def update(self):
         self.window.update()

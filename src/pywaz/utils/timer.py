@@ -61,11 +61,9 @@ class Timer(object):
 
     def move(self, n):
         self._time += n
-        if self.is_end():
+        if self.is_over():
             if self.enable_loop:
                 self._time = self._time % self._max
-            else:
-                self.stop()
                 
     def kill(self):
         pass

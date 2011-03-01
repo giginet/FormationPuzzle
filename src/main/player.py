@@ -24,6 +24,7 @@ class Player(Image):
     def __init__(self, n):
         self.number = n
         self.x, self.y = local_to_global(self.initial_position[n]).to_pos()
+        self.point = LocalPoint(0,0)
         super(Player, self).__init__(u'../resources/image/main/player/cursor.png', area=pygame.rect.Rect(0,n*40,40,40),x=100, y=100)
         self.animation_enable = False
         

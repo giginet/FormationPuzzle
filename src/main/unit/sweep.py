@@ -12,9 +12,10 @@ from parameter import SWEEP
 class Sweep(Unit):
     offset = (-1, -1)
     parameter = SWEEP
+    name = 'sweep'
     
-    def __init__(self, panels):
-        super(Sweep, self).__init__(panels)
+    def __init__(self, panels, stage):
+        super(Sweep, self).__init__(panels, stage)
         x = panels[0].point.x
         print cmp(x,settings.STAGE_WIDTH-x)
         if cmp(x,settings.STAGE_WIDTH-x) < 0:
@@ -27,5 +28,5 @@ class Sweep(Unit):
         panels = [panel, stage.get_panel(point+LocalPoint(1,1)),stage.get_panel(point+LocalPoint(-1,1)),stage.get_panel(point+LocalPoint(1,-1)),stage.get_panel(point+LocalPoint(-1,-1))]
         if cls.check(panels):
             for panel in panels: panel.unit = True
-            return Sweep(panels)
+            return Sweep(panels, stage)
         return None

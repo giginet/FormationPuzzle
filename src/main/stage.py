@@ -20,7 +20,6 @@ from main.unitmanager import UnitManager
 
 
 class Stage(Singleton):
-    
     def __init__(self):
         self.chips = OrderedUpdates()
         self._map = []
@@ -39,6 +38,7 @@ class Stage(Singleton):
         self._map = map(list, zip(*self._map)) #transpose matrix
         self.players = OrderedUpdates(Player(0), Player(1))
         self.panelsets = [] #回転中のPanelSet
+        self.count = [settings.STAGE_WIDTH*settings.STAGE_HEIGHT/2,settings.STAGE_WIDTH*settings.STAGE_HEIGHT/2]
     
         
     def update(self):
@@ -81,6 +81,12 @@ class Stage(Singleton):
                     map(lambda enemy: self.unitmng.battle(unit, enemy), enemies)
                 elif not hit:
                     self.unitmng.move_unit(unit, vector)
+        self.count = [0,0]
+        for x in xrange(settings.STAGE_WIDTH):
+            for y in xrange(settings.STAGE_HEIGHT):
+                self.count[self._map[x][y].owner]+=1
+                self._map[x][y].update()
+                
     def draw(self):
         update_rect = []
 #        for x in xrange(settings.STAGE_WIDTH):
@@ -121,13 +127,6 @@ class Stage(Singleton):
             if not panel.can_rotate(): return False
             if panel.owner != owner: return False
         return True
-    
-    def calc_gauge(self):
-        count = [0,0]
-        for x in xrange(settings.STAGE_WIDTH):
-            for y in xrange(settings.STAGE_HEIGHT):
-                count[self._map[x][y].owner]+=1
-        return count
     
     def redraw_frame(self):
         u"""フレームを再描画する必要があるかどうか評価

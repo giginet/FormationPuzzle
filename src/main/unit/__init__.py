@@ -8,10 +8,12 @@ class Unit(object):
     animation_enable = False
     offset = (0,0)
     parameter = ATTACK
+    name = 'unit'
     degree = LocalPoint(0,0)
     
-    def __init__(self, panels):
+    def __init__(self, panels, stage):
         self.panels = panels
+        self.stage = stage
         self.owner = panels[0].owner
         self.color = panels[0].color
         self.degree = LocalPoint(0, -1+self.owner*2)

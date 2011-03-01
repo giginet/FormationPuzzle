@@ -12,4 +12,4 @@ STAGE_HEIGHT = 28
 STAGE_OFFSET = (20,20)
 FRAMERATE = FPS = 30
 BACKGROUND = Image(u'../resources/image/main/background.png')
-TIME = 5
+TIME = 30
