@@ -17,11 +17,42 @@ class Sweep(Unit):
     
     def __init__(self, panels, stage):
         super(Sweep, self).__init__(panels, stage)
-        x = panels[0].point.x
-        if cmp(x,settings.STAGE_WIDTH-x) < 0:
-            self.degree = LocalPoint(1,0)
+        p = panels[0]
+        distances = [0,0]
+        edge = [False, False]
+        for i,v in enumerate([LocalPoint(-1, 0), LocalPoint(1,0)]):
+            d = 0
+            next_point = p.point + v
+            while True:
+                next_point += v
+                next = self.stage.get_panel(next_point)
+                d +=1
+                if isinstance(next, DummyPanel):
+                    edge[i] = True
+                    distances[i] = d
+                    break
+                elif not next.owner == p.owner:
+                    edge[i] = False
+                    distances[i] = d
+                    break
+        if edge[0] and edge[1]:
+            u"""両方とも端まで行った場合は遠い方を採用"""
+            x = p.point.x
+            if distances[0] < distances[1]:
+                self.degree = LocalPoint(1,0)
+            else:
+                self.degree = LocalPoint(-1,0)
         else:
-            self.degree = LocalPoint(-1,0)
+            u"""どちらかで敵パネルを見つけたときは、敵パネルがあって近い方"""
+            if edge[0] and not edge[1]:
+                self.degree = LocalPoint(1,0)
+            elif not edge[0] and edge[1]:
+                self.degree = LocalPoint(-1,0)
+            else:
+                if distances[0] < distances[1]:
+                    self.degree = LocalPoint(-1,0)
+                else:
+                    self.degree = LocalPoint(1,0)
     @classmethod
     def generate(cls, panel, stage):
         point =panel.point
