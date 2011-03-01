@@ -5,11 +5,10 @@
 #
 import pygame
 import settings
-import math
 
 from pywaz.sprite.animation import Image
 from pywaz.device.mouse import Mouse
-from pywaz.utils.timer import Timer
+from pywaz.device.key import Key
 
 from main.utils import global_to_local, LocalPoint, local_to_global
 

@@ -50,6 +50,9 @@ class Unit(object):
             else: return -1
         return
     
+    def move(self, panels):
+        pass
+    
     def draw(self):
         self.image.draw()
         

@@ -50,7 +50,7 @@ class MainSequence(Scene, Singleton):
         self.navigation = navigation
     
     def ready(self):
-        pass
+        self.navigation.timer.play()
         
     def update(self):
         super(MainSequence, self).update()

@@ -51,6 +51,7 @@ class UnitManager(Singleton):
             self.stage._map[current_point.x][current_point.y] = panel
             panel.point = current_point
             panel.change_owner(unit.owner)
+        unit.move(outdates)
         map(lambda p: self.check(p), outdates)
     def battle(self, a, b):
         u"""ユニットaがユニットbを攻撃する"""
