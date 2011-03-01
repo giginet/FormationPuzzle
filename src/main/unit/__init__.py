@@ -2,6 +2,7 @@ from pywaz.sprite.animation import Animation, AnimationInfo
 from main.utils import LocalPoint
 from pywaz.utils.timer import Timer
 from pywaz.mixer.sound import Sound
+from main.effect import Effect
 
 from parameter import ATTACK
 
@@ -25,9 +26,14 @@ class Unit(object):
         self.limit = self.parameter['limit']
         self.count = 0
         self.timer = Timer(self.parameter['frequency'])
-        self.timer.play()
+        self.delay = Timer(self.parameter['delay'])
+        self.delay.play()
         appear_sound = Sound(u'../resources/sound/appear.wav')
         appear_sound.play()
+        self.image.x, self.image.y = (self.panels[0].point + LocalPoint(self.offset)).to_global().to_pos()
+        if self.parameter['effect']['enable']:
+            ef = self.parameter['effect']
+            Effect(ef['appear'], AnimationInfo(0,0,self.parameter['delay'],ef['width'],ef['height'],1), x=self.image.x-ef['offset'], y=self.image.y-ef['offset'])
     
     @classmethod
     def generate(cls, panels, map):
@@ -45,6 +51,8 @@ class Unit(object):
         
     def update(self):
         self.image.x, self.image.y = (self.panels[0].point + LocalPoint(self.offset)).to_global().to_pos()
+        self.delay.tick()
+        if self.delay.is_over(): self.timer.play()
         self.timer.tick()
         if self.timer.is_over():
             if self.count < self.limit:
@@ -58,7 +66,7 @@ class Unit(object):
         pass
     
     def draw(self):
-        self.image.draw()
+        if self.delay.is_over(): self.image.draw()
         
     def get_front(self, vector):
         x, y = vector.to_pos()

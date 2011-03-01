@@ -23,7 +23,7 @@ def main():
     game.set_caption(u"ジントリ！")
     game.get_scene_manager().set_scenes({'logo':LogoScene(),'game':GameScene(), 'title':TitleScene()})
     if settings.DEBUG:
-        game.get_scene_manager().change_scene('game')
+        game.get_scene_manager().change_scene('game',False,True)
     else:
         game.get_scene_manager().change_scene('logo')
     while 1:

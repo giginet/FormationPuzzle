@@ -18,7 +18,15 @@ ATTACK = {
           'frequency':10,
           'width':60,
           'height':60,
-          'image':u'../resources/image/main/unit/attack.png'
+          'image':u'../resources/image/main/unit/attack.png',
+          'effect':{'enable':True,
+                    'appear':'../resources/effect/attack_appear.png',
+                    'disappear':None,
+                    'offset':162,
+                    'width':384,
+                    'height':384
+            },
+          'delay':40
 }
 GUARD = {
           'hp':30,
@@ -27,7 +35,15 @@ GUARD = {
           'frequency':30,
           'width':80,
           'height':20,
-          'image':u'../resources/image/main/unit/guard.png'
+          'image':u'../resources/image/main/unit/guard.png',
+          'effect':{'enable':False,
+                    'appear':'../resources/image/main/unit/attack.png',
+                    'disappear':None,
+                    'offset':162,
+                    'width':384,
+                    'height':384
+            },
+          'delay':0
 }
 SWEEP = {
           'hp':1,
@@ -36,7 +52,15 @@ SWEEP = {
           'frequency':5,
           'width':60,
           'height':60,
-          'image':u'../resources/image/main/unit/sweep.png'
+          'image':u'../resources/image/main/unit/sweep.png',
+          'effect':{'enable':False,
+                    'appear':'../resources/image/main/unit/attack.png',
+                    'disappear':None,
+                    'offset':162,
+                    'width':384,
+                    'height':384
+            },
+          'delay':0
 }
 BOMB = {
           'hp':10,
@@ -45,5 +69,13 @@ BOMB = {
           'frequency':60,
           'width':40,
           'height':40,
-          'image':u'../resources/image/main/unit/bomb.png'
+          'image':u'../resources/image/main/unit/bomb.png',
+          'effect':{'enable':False,
+                    'appear':'../resources/image/main/unit/attack.png',
+                    'disappear':None,
+                    'offset':162,
+                    'width':384,
+                    'height':384
+            },
+          'delay':0
 }

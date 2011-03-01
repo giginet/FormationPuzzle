@@ -11,7 +11,7 @@ class Attack(Unit):
     offset = (-1, -1)
     parameter = ATTACK
     name = 'attack'
-    
+        
     @classmethod
     def generate(cls, panel, stage):
         point =panel.point

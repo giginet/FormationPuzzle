@@ -5,7 +5,7 @@
 #
 from pywaz.sprite.image import Image
 
-DEBUG = False
+DEBUG = True
 PANELSIZE = 20
 STAGE_WIDTH = 32
 STAGE_HEIGHT = 28

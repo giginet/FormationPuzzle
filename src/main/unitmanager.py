@@ -3,6 +3,8 @@
 #    Created on 2011/02/21
 #    Created by giginet
 #
+import settings
+
 from pygame.rect import Rect
 from pywaz.utils.singleton import Singleton
 from pywaz.sprite import OrderedUpdates
@@ -24,11 +26,9 @@ class UnitManager(Singleton):
         self.reset()
     def reset(self):
         self.units = []
-        self.images = OrderedUpdates()
     def remove(self, unit):
         if not unit: return
         unit.disappear()
-        self.images.remove(unit.image)
         del self.units[self.units.index(unit)]
     def move_unit(self, unit, vector):
         u"""unitをvectorの方向に移動させる"""
@@ -66,10 +66,19 @@ class UnitManager(Singleton):
             self.remove(b)
         #ToDo エフェクト
         Sound(u'../resources/sound/battle_%s.wav' % a.name).play()
-        Effect(u'../resources/effect/battle.png', AnimationInfo(0,0,40,64,64,1), x=b.image.x+b.image.center.x-20, y=b.image.y)
+        v = a.degree
+        for panel in a.panels:
+            next = self.stage.get_panel(panel.point+v)
+            if not a.owner == next.owner and next.unit:
+                y = [-32,-12]
+                Effect(u'../resources/effect/battle.png', AnimationInfo(0,0,40,64,64,1), x=next.x+settings.PANELSIZE/2-32, y=panel.y+y[a.owner])
         
     def draw(self):
-        return self.images.draw(Game.get_screen())
+        rects = []
+        for unit in self.units:
+            unit.draw()
+            rects.append(unit.image.rect)
+        return rects
     def get_unit_by_panel(self, panel):
         for unit in self.units:
             if unit.has(panel): return unit
@@ -88,6 +97,5 @@ class UnitManager(Singleton):
         for u in unit:
             if u: 
                 u2.append(u)
-                self.images.add(u.image)
                 
         if u2: self.units.extend(u2)
