@@ -14,11 +14,11 @@ class SceneManager(object):
     def set_scenes(self, dict):
         self._scenes_dict = dict
         
-    def change_scene(self, key):
+    def change_scene(self, key, *args, **kwargs):
         if self._scenes_dict.has_key(key):
             if self.current_scene:  self.current_scene.finalize()
             self._current_scene = self._scenes_dict[key]
-            self.current_scene.ready()
+            self.current_scene.ready(args, kwargs)
         
     @property
     def current_scene(self):

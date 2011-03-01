@@ -17,7 +17,7 @@ from pywaz.sprite.button import Button
 
 class LogoScene(Scene):
     BACKGROUND = (255,255,255)
-    def ready(self):
+    def ready(self, *args, **kwargs):
         super(LogoScene, self).ready()
         self.logo = Image("../resources/image/menu/kawaz.png", x=273, y=244, alpha=False)
         self.sprites.add(self.logo)
@@ -32,22 +32,35 @@ class LogoScene(Scene):
             self.logo.alpha = 255*self.timer.now/60
         elif 120 < self.timer.now:
             self.logo.alpha = 255*(180-self.timer.now)/60
+
+class BombToggle(Button):
+    def __init__(self, filepath, w, h, x=0, y=0):
+        super(BombToggle, self).__init__(filepath,w,h,x,y)
+        self.bomb = False
         
+    def update(self):
+        super(BombToggle, self).update()
+        if self.bomb: self.ainfo.index = 1
+
+    def on_release(self):
+        self.bomb = not self.bomb
+
 class TitleScene(Scene):
-    def ready(self):
+    def ready(self, *args, **kwargs):
         self.bgm = BGM(u'../resources/bgm/title_intro.wav', -1, u'../resources/bgm/title_loop.wav')
         self.logo = Image(u'../resources/image/menu/title/logo.png', x=80, y=-70)
-        self.play = Button(u'../resources/image/menu/title/play.png', w=270, h=80, x=110, y=370)
-        self.play.on_release = lambda: Game.get_scene_manager().change_scene('game')
-        self.hard = Button(u'../resources/image/menu/title/hard.png', w=270, h=80, x=420, y=370)
-        self.score = Button(u'../resources/image/menu/title/score.png', w=270, h=80, x=110, y=470)
+        self.play = Button(u'../resources/image/menu/title/cpu.png', w=270, h=80, x=110, y=370)
+        self.vs = Button(u'../resources/image/menu/title/2p.png', w=270, h=80, x=420, y=370)
+        self.hard = BombToggle(u'../resources/image/menu/title/hard.png', w=270, h=80, x=110, y=470)
         self.exit = Button(u'../resources/image/menu/title/exit.png', w=270, h=80, x=420, y=470)
         self.exit.on_release = lambda: Game.get_scene_manager().exit()
-        for button in [self.play, self.hard, self.score, self.exit]:
+        self.vs.on_release = lambda: Game.get_scene_manager().change_scene('game', self.hard.bomb, False)
+        self.play.on_release = lambda: Game.get_scene_manager().change_scene('game', self.hard.bomb, True)
+        for button in [self.play, self.vs, self.hard, self.exit]:
             button.hover_sound = '../resources/sound/on_cursor.wav'
             button.press_sound = '../resources/sound/selected.wav'
         self.sprites.add(Image(u'../resources/image/menu/background.png'),
-                         self.logo,self.play,self.hard,self.score,self.exit
+                         self.logo,self.play,self.vs,self.hard,self.exit
         )
         self.bgm.play()
         self.timer = Timer(60)

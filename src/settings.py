@@ -5,7 +5,7 @@
 #
 from pywaz.sprite.image import Image
 
-DEBUG = True
+DEBUG = False
 PANELSIZE = 20
 STAGE_WIDTH = 32
 STAGE_HEIGHT = 28
@@ -14,4 +14,4 @@ FRAMERATE = FPS = 30
 ROTATE_SPEED = 5
 BACKGROUND = Image(u'../resources/image/main/background.png')
 TIME = 180
-CALLED = 0.6
+CALLED = 0.75

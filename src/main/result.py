@@ -11,8 +11,9 @@ from pywaz.sprite.image import Image
 from pywaz.sprite import OrderedUpdates
 
 class Result(Singleton):
-    def __init__(self, navigation):
+    def __init__(self, stage, navigation):
         self.navigation = navigation
+        self.stage = stage
         self.background = Image(u'../resources/image/main/result/background.png')
         self.player1 = Image(u'../resources/image/main/result/1p.png', x=63, y=40)
         self.player2 = Image(u'../resources/image/main/result/2p.png', x=583, y=40)
@@ -21,7 +22,7 @@ class Result(Singleton):
         self.retry = Button(u'../resources/image/main/result/retry.png', w=180, h=80, x=143, y=460)
         self.menu = Button(u'../resources/image/main/result/menu.png', w=180, h=80, x=443, y=460)
         self.sprites = OrderedUpdates(self.player1, self.player2, self.gauge2, self.gauge1, self.retry, self.menu)
-        self.retry.on_release = lambda : Game.get_scene_manager().change_scene('game')
+        self.retry.on_release = lambda : Game.get_scene_manager().change_scene('game',stage.bomb, stage.cpu)
         self.menu.on_release = lambda : Game.get_scene_manager().change_scene('title')
         for button in [self.retry, self.menu]:
             button.hover_sound = '../resources/sound/on_cursor.wav'

@@ -21,8 +21,9 @@ from main.unitmanager import UnitManager
 
 
 class Stage(Singleton):
-    def __init__(self, bomb=True):
+    def __init__(self, bomb=False, cpu=True):
         self.bomb = bomb
+        self.cpu = cpu
         self.chips = OrderedUpdates()
         self._map = []
         self.unitmng = UnitManager(self)
@@ -39,7 +40,10 @@ class Stage(Singleton):
                 self.chips.add(panel)
             self._map.append(column)
         self._map = map(list, zip(*self._map)) #transpose matrix
-        self.players = OrderedUpdates(Player(0), NPC(1))
+        if cpu:
+            self.players = OrderedUpdates(Player(0), NPC(1))
+        else:
+            self.players = OrderedUpdates(Player(0), Player(1))
         self.panelsets = [] #回転中のPanelSet
         self.count = [settings.STAGE_WIDTH*settings.STAGE_HEIGHT/2,settings.STAGE_WIDTH*settings.STAGE_HEIGHT/2]
     

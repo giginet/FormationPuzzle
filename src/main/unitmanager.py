@@ -26,6 +26,7 @@ class UnitManager(Singleton):
         self.units = []
         self.images = OrderedUpdates()
     def remove(self, unit):
+        if not unit: return
         unit.disappear()
         self.images.remove(unit.image)
         del self.units[self.units.index(unit)]
@@ -65,7 +66,7 @@ class UnitManager(Singleton):
             self.remove(b)
         #ToDo エフェクト
         Sound(u'../resources/sound/battle_%s.wav' % a.name).play()
-        Effect(u'../resources/effect/battle.png', AnimationInfo(0,0,40,64,64,1), x=b.image.x, y=b.image.y)
+        Effect(u'../resources/effect/battle.png', AnimationInfo(0,0,40,64,64,1), x=b.image.x+b.image.center.x-20, y=b.image.y)
         
     def draw(self):
         return self.images.draw(Game.get_screen())
@@ -82,7 +83,7 @@ class UnitManager(Singleton):
         for x in xrange(lp.x-2,lp.x+2):
             for y in xrange(lp.y-2,lp.y+2):
                 unit.append(Guard.generate(self.stage.get_panel(LocalPoint(x,y)), self.stage))
-                unit.append(Bomb.generate(self.stage.get_panel(LocalPoint(x,y)), self.stage))
+                if self.stage.bomb: unit.append(Bomb.generate(self.stage.get_panel(LocalPoint(x,y)), self.stage))
         u2 = []
         for u in unit:
             if u: 

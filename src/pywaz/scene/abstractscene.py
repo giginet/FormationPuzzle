@@ -15,7 +15,7 @@ class Scene(object):
     def __init__(self):
         self.sprites = OrderedUpdates()
     
-    def ready(self):
+    def ready(self, *args, **kwargs):
         Game.get_screen().fill(self.BACKGROUND)
     
     def update(self, *args, **kwargs):

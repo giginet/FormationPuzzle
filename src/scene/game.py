@@ -16,32 +16,38 @@ from main.stage import Stage
 from main.navigation import Navigation
 
 class GameScene(Scene):
-    def ready(self):
+    def ready(self, *args, **kwargs):
         self.background = settings.BACKGROUND
         self.frame = Image(u'../resources/image/main/frame.png', x=settings.STAGE_OFFSET[0]-15, y=settings.STAGE_OFFSET[1]-15)
-        self.stage = Stage()
+        self.stage = Stage(args[0][0], args[0][1])
         self.bgm = BGM(u'../resources/bgm/game_intro.wav', -1, u'../resources/bgm/game_loop.wav')
         self.background.draw()
         self.frame.draw()
         self.navigation = Navigation(self.stage)
         self.sequence_mng = SceneManager({'ready':ReadySequence(self.frame, self.background),
                                           'main': MainSequence(self.stage, self.navigation), 
-                                          'result':ResultSequence(self.navigation, self.frame), 
+                                          'result':ResultSequence(self.stage, self.navigation, self.frame), 
                                           'pause':PauseSequence()})
         def init():
             if settings.DEBUG: return 'main'
             else: return 'ready'
         self.sequence_mng.change_scene(init())
+        self.redraw = False
         
     def update(self):
         super(GameScene, self).update()
         self.bgm.play()
         next = self.sequence_mng.current_scene.update()
-        if next: 
+        if next:
+            self.redraw = True
             self.sequence_mng.change_scene(next)
         
     def draw(self):
         super(GameScene, self).draw()
+        if self.redraw:
+            self.redraw = False
+            self.background.draw()
+            self.frame.draw()
         if self.stage.redraw_frame(): self.frame.draw() #マップのはじで回転させたとき、回転の軌跡が残ってしまうため、フレームを再描画
         rect_draw = self.stage.draw()
         rect_draw += self.navigation.draw()
