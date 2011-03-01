@@ -4,6 +4,7 @@
 #    Created by giginet
 #
 from . import Unit
+from pywaz.mixer.sound import Sound
 from main.utils import LocalPoint
 from parameter import BOMB
 
@@ -35,4 +36,5 @@ class Bomb(Unit):
         for target in targets:
             target.change_owner(owner)
             target.set_disable(True)
+        Sound(u'../resources/sound/bomb.wav').play()
         super(Bomb, self).disappear()

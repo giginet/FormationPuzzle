@@ -5,6 +5,7 @@
 #
 from animation import Animation, AnimationInfo
 from ..device.mouse import Mouse
+from ..mixer.sound import Sound
 
 class Button(Animation):
     pressed = False
@@ -12,6 +13,8 @@ class Button(Animation):
     animation_enable = False
     hover_image = True
     press_image = True
+    hover_sound = None
+    press_sound = None
     
     def __init__(self, filepath, w, h, x=0, y=0):
         super(Button, self).__init__(filepath, AnimationInfo(0,0,1,w,h), x=x, y=y)
@@ -28,10 +31,12 @@ class Button(Animation):
     
     def _on_mouseover(self):
         if self.hover_image: self.ainfo.index = 1
+        if self.hover_sound: Sound(self.hover_sound).play()
         self.on_mouseover()
     
     def _on_press(self):
         if self.press_image: self.ainfo.index = 2
+        if self.press_sound: Sound(self.press_sound).play()
         self.on_press()
     
     def _on_release(self):

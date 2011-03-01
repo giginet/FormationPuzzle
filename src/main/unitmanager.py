@@ -7,6 +7,8 @@ from pygame.rect import Rect
 from pywaz.utils.singleton import Singleton
 from pywaz.sprite import OrderedUpdates
 from pywaz.core.game import Game
+from pywaz.mixer.sound import Sound
+from main.effect import Effect, AnimationInfo
 
 from main.panel import DummyPanel
 from main.utils import LocalPoint
@@ -14,6 +16,7 @@ from main.unit.attack import Attack
 from main.unit.bomb import Bomb
 from main.unit.guard import Guard
 from main.unit.sweep import Sweep
+
 
 class UnitManager(Singleton):
     def __init__(self, stage):
@@ -61,6 +64,9 @@ class UnitManager(Singleton):
             print u"""敵ユニットをやっつけた！"""
             self.remove(b)
         #ToDo エフェクト
+        Sound(u'../resources/sound/battle_%s.wav' % a.name).play()
+        Effect(u'../resources/effect/battle.png', AnimationInfo(0,0,40,64,64,1), x=b.image.x, y=b.image.y)
+        
     def draw(self):
         return self.images.draw(Game.get_screen())
     def get_unit_by_panel(self, panel):

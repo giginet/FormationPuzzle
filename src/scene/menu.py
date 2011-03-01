@@ -43,6 +43,9 @@ class TitleScene(Scene):
         self.score = Button(u'../resources/image/menu/title/score.png', w=270, h=80, x=110, y=470)
         self.exit = Button(u'../resources/image/menu/title/exit.png', w=270, h=80, x=420, y=470)
         self.exit.on_release = lambda: Game.get_scene_manager().exit()
+        for button in [self.play, self.hard, self.score, self.exit]:
+            button.hover_sound = '../resources/sound/on_cursor.wav'
+            button.press_sound = '../resources/sound/selected.wav'
         self.sprites.add(Image(u'../resources/image/menu/background.png'),
                          self.logo,self.play,self.hard,self.score,self.exit
         )

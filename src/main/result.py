@@ -23,6 +23,9 @@ class Result(Singleton):
         self.sprites = OrderedUpdates(self.player1, self.player2, self.gauge2, self.gauge1, self.retry, self.menu)
         self.retry.on_release = lambda : Game.get_scene_manager().change_scene('game')
         self.menu.on_release = lambda : Game.get_scene_manager().change_scene('title')
+        for button in [self.retry, self.menu]:
+            button.hover_sound = '../resources/sound/on_cursor.wav'
+            button.press_sound = '../resources/sound/selected.wav'
     def ready(self):
         self.gauge1.xscale = float(self.navigation.gauge.proportion[0])/100
         

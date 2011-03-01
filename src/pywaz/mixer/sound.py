@@ -16,9 +16,9 @@ class Sound(object):
     
         try:
             self.sound = pygame.mixer.Sound(filepath)
-        except pygame.error:
+        except pygame.error, msg:
             print u'''WARNING '%s' is not exist.''' % filepath
-            raise IOError
+            raise IOError, msg
         
     def play(self):
         self.sound.play()

@@ -1,6 +1,7 @@
-#Tue Mar 01 18:40:38 JST 2011
+#Tue Mar 01 23:03:59 JST 2011
 eclipse.preferences.version=1
 encoding//src/main.py=utf-8
+encoding//src/main/effect.py=utf-8
 encoding//src/main/navigation/gauge.py=utf-8
 encoding//src/main/navigation/number.py=utf-8
 encoding//src/main/navigation/timer.py=utf-8
@@ -21,6 +22,7 @@ encoding//src/pywaz/device/joypad.py=utf-8
 encoding//src/pywaz/device/key.py=utf-8
 encoding//src/pywaz/device/mouse.py=utf-8
 encoding//src/pywaz/mixer/bgm.py=utf-8
+encoding//src/pywaz/mixer/sound.py=utf-8
 encoding//src/pywaz/scene/abstractscene.py=utf-8
 encoding//src/pywaz/scene/manager.py=utf-8
 encoding//src/pywaz/sprite/animation.py=utf-8

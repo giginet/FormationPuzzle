@@ -1,8 +1,10 @@
 from pywaz.sprite.animation import Animation, AnimationInfo
 from main.utils import LocalPoint
 from pywaz.utils.timer import Timer
+from pywaz.mixer.sound import Sound
 
 from parameter import ATTACK
+
 
 class Unit(object):
     animation_enable = False
@@ -24,6 +26,8 @@ class Unit(object):
         self.count = 0
         self.timer = Timer(self.parameter['frequency'])
         self.timer.play()
+        appear_sound = Sound(u'../resources/sound/appear.wav')
+        appear_sound.play()
     
     @classmethod
     def generate(cls, panels, map):
@@ -70,6 +74,9 @@ class Unit(object):
     def has(self, panel): return panel in self.panels
     
     def disappear(self):
+        if not self.name == 'bomb':
+            disappear_sound = Sound(u'../resources/sound/disappear.wav')
+            disappear_sound.play()
         for panel in self.panels: 
             panel.change_color()
             panel.unit = False

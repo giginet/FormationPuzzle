@@ -14,6 +14,7 @@ from pywaz.sprite import OrderedUpdates
 
 from main.player import Player, NPC
 from main.panel import Panel, PanelSet, DummyPanel
+from main.effect import Effect
 
 from main.utils import LocalPoint
 from main.unitmanager import UnitManager
@@ -26,6 +27,7 @@ class Stage(Singleton):
         self._map = []
         self.unitmng = UnitManager(self)
         self.unitmng.reset()
+        self.effects = OrderedUpdates()
         for y in xrange(settings.STAGE_HEIGHT):
             column = []
             for x in xrange(settings.STAGE_WIDTH):
@@ -37,7 +39,7 @@ class Stage(Singleton):
                 self.chips.add(panel)
             self._map.append(column)
         self._map = map(list, zip(*self._map)) #transpose matrix
-        self.players = OrderedUpdates(Player(0), Player(1))
+        self.players = OrderedUpdates(Player(0), NPC(1))
         self.panelsets = [] #回転中のPanelSet
         self.count = [settings.STAGE_WIDTH*settings.STAGE_HEIGHT/2,settings.STAGE_WIDTH*settings.STAGE_HEIGHT/2]
     
@@ -87,7 +89,8 @@ class Stage(Singleton):
             for y in xrange(settings.STAGE_HEIGHT):
                 self.count[self._map[x][y].owner]+=1
                 self._map[x][y].update()
-                
+        Effect.effects.update()
+        
     def draw(self):
         update_rect = []
 #        for x in xrange(settings.STAGE_WIDTH):
@@ -97,6 +100,7 @@ class Stage(Singleton):
         update_rect += self.unitmng.draw()
         update_rect += self.players.draw(Game.get_screen())
         #map(lambda u:u.draw(),self.players)
+        update_rect += Effect.effects.draw(Game.get_screen())
         return update_rect
         
     def get_panel(self, lp):
