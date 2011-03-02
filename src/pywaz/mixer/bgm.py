@@ -27,8 +27,8 @@ class BGM(Singleton):
         self.loopfile = loopfile
         self._load_file(filename)
 
-    def change(self, filename, loop=0, loopfile=None):
-        self.fadeout(500)
+    def change(self, filename, loop=0, loopfile=None, ms=500):
+        self.fadeout(ms)
         self._set(filename, loop, loopfile)
         self._reset()
 

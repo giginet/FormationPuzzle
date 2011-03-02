@@ -27,7 +27,7 @@ class GameScene(Scene):
         self.navigation = Navigation(self.stage)
         self.sequence_mng = SceneManager({'ready':ReadySequence(self.frame, self.background),
                                           'main': MainSequence(self.stage, self.navigation), 
-                                          'result':ResultSequence(self.stage, self.navigation, self.frame), 
+                                          'result':ResultSequence(self.stage, self.navigation, self.frame, self.bgm), 
                                           'pause':PauseSequence(self.navigation)})
         def init():
             if settings.DEBUG: return 'main'

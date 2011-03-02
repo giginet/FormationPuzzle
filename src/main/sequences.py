@@ -84,19 +84,20 @@ class MainSequence(Scene, Singleton):
 from main.result import Result
 from pywaz.mixer.bgm import BGM
 class ResultSequence(Scene, Singleton):
-    def __init__(self, stage, navigation, frame):
+    def __init__(self, stage, navigation, frame, bgm):
         super(ResultSequence,self).__init__()
         self.stage = stage
+        self.bgm = bgm
         self.navigation = navigation
         self.frame = frame
         self.window = Result(stage, navigation)
         
     def ready(self, *args, **kwargs):
         Mouse.show_cursor()
-        self.bgm = BGM(u'../resources/bgm/result_intro.wav', -1, u'../resources/bgm/result_loop.wav')
-        self.bgm.play()
+        self.bgm.change(u'../resources/bgm/result_intro.wav', -1, u'../resources/bgm/result_loop.wav', 500)
         self.window.ready()
         self.draw()
+        self.bgm.play()
     
     def update(self):
         self.window.update()
