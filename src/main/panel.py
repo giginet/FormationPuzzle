@@ -12,6 +12,7 @@ from pywaz.utils.vector import Vector
 from pywaz.utils.timer import Timer
 from pywaz.core.game import Game
 
+from main.effect import Effect, AnimationInfo
 from main.utils import LocalPoint
 
 class Panel(Image):
@@ -59,6 +60,7 @@ class Panel(Image):
             self.disable = disable
             if disable:
                 self.disable_timer.play()
+                Effect(u'../resources/effect/disable.png', AnimationInfo(0,0,60,64,64,1), x=self.x-22, y=self.y-22)
                 self.change_image(u"../resources/image/main/panel/disable.png")
             else:
                 self.disable_timer.stop()

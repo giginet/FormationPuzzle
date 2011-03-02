@@ -12,6 +12,7 @@ class Effect(Animation):
     def __init__(self, filepath, ainfo, x=0, y=0):
         super(Effect, self).__init__(filepath, ainfo, x, y)
         self.effects.add(self)
+        self.animation_enable = True
     
     def update(self):
         super(Effect, self).update()
