@@ -21,45 +21,58 @@ class Player(Image):
                         (settings.STAGE_WIDTH-1, settings.STAGE_HEIGHT-1),
                         (0,0),
     )
-    type = 'mouse'
     
-    def __init__(self, n):
+    def __init__(self, n, interfaces=None):
         self.number = n
         self.x, self.y = local_to_global(self.initial_position[n]).to_pos()
         self.point = LocalPoint(self.initial_position[n])
+        self.interfaces = [] 
         super(Player, self).__init__(u'../resources/image/main/player/cursor.png', area=pygame.rect.Rect(0,n*40,40,40),x=100, y=100)
         self.animation_enable = False
         self.joy = JoyPad()
-        self.set_type()
+        if not interfaces: self.set_type()
+        else: self.interfaces = interfaces
         self.press_counter = [0,0,0,0,0,0]
+        self.key_mode = False
+        self.pre_mouse_point = LocalPoint(0,0)
         
     def set_type(self):
         count = self.joy.get_count()
+        print self.number, self.interfaces   
         if count == 0:
             types = ('mouse','key')
         elif count == 1:
             types = ('mouse', 'pad')
         else:
             types = ('pad', 'pad')
-        self.type = types[self.number]
-            
+        self.interfaces.append(types[self.number])
+
     def update(self):
-        if self.type == 'mouse': 
+        u'''
+        なにかキーが押されたらkey_mode=True。このとき、マウス操作は利かない
+        マウス座標が前と変わったら、key_mode=False
+        '''
+        if not self.pre_mouse_point == self.get_mouse_point(): self.key_mode = False
+        if 'mouse' in self.interfaces and not self.key_mode: 
             self.point = self.get_mouse_point()
             if self.in_map():
                 Mouse.hide_cursor()
             else: 
                 Mouse.show_cursor()
-        elif self.type == 'key':
+        if 'key' in self.interfaces:
             if Key.is_press(K_UP):
                 self.press_counter[0] += 1
+                self.key_mode = True
             elif Key.is_press(K_DOWN):
                 self.press_counter[1] += 1
+                self.key_mode = True
             if Key.is_press(K_LEFT):
                 self.press_counter[2] += 1
+                self.key_mode = True
             elif Key.is_press(K_RIGHT):
                 self.press_counter[3] += 1
-        elif self.type == 'pad':
+                self.key_mode = True
+        if 'pad' in self.interfaces:
             if self.joy.get_count() == 1: id = 0
             else: id = self.number
             if self.joy.sticks[id].get_button(14):
@@ -87,6 +100,7 @@ class Player(Image):
         if self.point.y < 0: self.point.y =0
         elif self.point.y > settings.STAGE_HEIGHT-2: self.point.y = settings.STAGE_HEIGHT-2
         self.move_pointer()
+        self.pre_mouse_point = self.get_mouse_point()
         
     def move_pointer(self):
         if self.in_map():
@@ -95,7 +109,7 @@ class Player(Image):
             self.rect.y = self.y    
         
     def poll(self):
-        if self.type == 'mouse':
+        if 'mouse' in self.interfaces and not self.key_mode:
             if Mouse.is_press('LEFT') and not self.pressed:
                 self.pressed = True
                 return 1
@@ -104,14 +118,16 @@ class Player(Image):
                 return -1
             if Mouse.is_release(self):
                 self.pressed = False
-        elif self.type == 'key':
+        if 'key' in self.interfaces:
             if Key.is_press(K_x): 
                 if not self.press_counter[4]:
                     self.press_counter[4] = 1
+                    self.key_mode = True
                     return -1
             elif Key.is_press(K_z):
                 if not self.press_counter[5]: 
                     self.press_counter[5] = 1
+                    self.key_mode = True
                     return 1
             else:
                 self.press_counter[4] = 0
@@ -131,7 +147,7 @@ class NPC(Player):
         super(NPC, self).__init__(n)
         self.act_timer = Timer(1)
         self.goal = LocalPoint(0,0)
-        self.type = 'npc'
+        self.interfaces = ['npc']
         self.rotate = False
         
     def update(self):

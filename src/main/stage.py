@@ -40,7 +40,7 @@ class Stage(Singleton):
             self._map.append(column)
         self._map = map(list, zip(*self._map)) #transpose matrix
         if cpu:
-            self.players = OrderedUpdates(Player(0), NPC(1))
+            self.players = OrderedUpdates(Player(0, ('mouse', 'key')), NPC(1))
         else:
             self.players = OrderedUpdates(Player(0), Player(1))
         self.panelsets = [] #回転中のPanelSet

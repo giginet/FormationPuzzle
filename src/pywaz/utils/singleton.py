@@ -17,14 +17,16 @@ class Singleton(object):
         tmpInstance = None
         if not hasattr(cls, "_instanceDict"):
             cls._instanceDict = {}
-            cls._instanceDict[str(hash(cls))] = super(Singleton, cls).__new__(cls, *args, **kwargs)
+            cls._instanceDict[str(hash(cls))] = super(Singleton, cls).__new__(cls)
             tmpInstance = cls._instanceDict[str(hash(cls))]
-        elif not str(hash(cls)) in cls._instanceDict:
-            cls._instanceDict[str(hash(cls))] = super(Singleton, cls).__new__(cls, *args, **kwargs)
+        elif not hasattr(cls._instanceDict, str(hash(cls))):
+            cls._instanceDict[str(hash(cls))] = super(Singleton, cls).__new__(cls)
             tmpInstance = cls._instanceDict[str(hash(cls))]
         else:
             tmpInstance = cls._instanceDict[str(hash(cls))]
         return tmpInstance
+
+    def __init__(self, *args, **kwargs): pass
 
 def _test():
     import doctest

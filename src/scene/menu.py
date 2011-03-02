@@ -48,6 +48,7 @@ class BombToggle(Button):
 class TitleScene(Scene):
     def ready(self, *args, **kwargs):
         self.bgm = BGM(u'../resources/bgm/title_intro.wav', -1, u'../resources/bgm/title_loop.wav')
+        self.player = Image(u'../resources/image/menu/title/player.png', x=410, y=-0)
         self.logo = Image(u'../resources/image/menu/title/logo.png', x=80, y=-70)
         self.play = Button(u'../resources/image/menu/title/cpu.png', w=270, h=80, x=110, y=370)
         self.vs = Button(u'../resources/image/menu/title/2p.png', w=270, h=80, x=420, y=370)
@@ -60,7 +61,7 @@ class TitleScene(Scene):
             button.hover_sound = '../resources/sound/on_cursor.wav'
             button.press_sound = '../resources/sound/selected.wav'
         self.sprites.add(Image(u'../resources/image/menu/background.png'),
-                         self.logo,self.play,self.vs,self.hard,self.exit
+                         self.logo,self.play,self.vs,self.hard,self.exit, self.player
         )
         self.timer = Timer(60)
         self.timer.play()

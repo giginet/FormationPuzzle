@@ -107,17 +107,24 @@ class ResultSequence(Scene, Singleton):
         return [Rect(0,0, 800, 600)]
 
 class PauseSequence(Scene, Singleton):
+    def __init__(self, navigation):
+        super(PauseSequence,self).__init__()
+        self.navigation = navigation
+    
     def ready(self, *args, **kwargs):
         BGM.set_volume(0.4)
         self.press = True
         Mouse.show_cursor()
         self.string = Animation(u'../resources/image/main/strings.png',AnimationInfo(3,0,0,360,210,0),x=220, y=195)
-    
+        self.sprites.add(self.string)
+        
     def draw(self):
-        self.string.draw()
-        return []
+        rects = []
+        rects.append(self.navigation.draw())
+        return super(PauseSequence, self).draw()
         
     def update(self):
+        self.navigation.gauge.is_update = True
         if not Key.is_press(K_RETURN):
             self.press = False
         if not self.press and Key.is_press(K_RETURN):
