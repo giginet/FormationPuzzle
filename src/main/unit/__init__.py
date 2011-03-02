@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from pywaz.sprite.animation import Animation, AnimationInfo
 from main.utils import LocalPoint
 from pywaz.utils.timer import Timer
@@ -50,6 +51,10 @@ class Unit(object):
             return True
         
     def update(self):
+        u"""1のとき進める、-1のとき消す"""
+        for panel in self.panels:
+            if panel.disable or not panel.owner == self.owner:
+                return -1
         self.image.x, self.image.y = (self.panels[0].point + LocalPoint(self.offset)).to_global().to_pos()
         self.delay.tick()
         if self.delay.is_over(): self.timer.play()

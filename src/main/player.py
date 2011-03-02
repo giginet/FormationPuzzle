@@ -38,7 +38,6 @@ class Player(Image):
         
     def set_type(self):
         count = self.joy.get_count()
-        print self.number, self.interfaces   
         if count == 0:
             types = ('mouse','key')
         elif count == 1:

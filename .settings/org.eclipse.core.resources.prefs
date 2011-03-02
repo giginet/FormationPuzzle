@@ -1,4 +1,4 @@
-#Wed Mar 02 21:03:11 JST 2011
+#Thu Mar 03 00:41:21 JST 2011
 eclipse.preferences.version=1
 encoding//src/main.py=utf-8
 encoding//src/main/effect.py=utf-8
@@ -10,6 +10,7 @@ encoding//src/main/player.py=utf-8
 encoding//src/main/result.py=utf-8
 encoding//src/main/sequences.py=utf-8
 encoding//src/main/stage.py=utf-8
+encoding//src/main/unit/__init__.py=utf-8
 encoding//src/main/unit/attack.py=utf-8
 encoding//src/main/unit/bomb.py=utf-8
 encoding//src/main/unit/guard.py=utf-8
