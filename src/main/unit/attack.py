@@ -5,7 +5,7 @@
 #
 from . import Unit
 from main.utils import LocalPoint
-from parameter import ATTACK
+from settings.parameter import ATTACK
 
 class Attack(Unit):
     offset = (-1, -1)

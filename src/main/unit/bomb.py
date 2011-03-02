@@ -6,7 +6,7 @@
 from . import Unit
 from pywaz.mixer.sound import Sound
 from main.utils import LocalPoint
-from parameter import BOMB
+from settings.parameter import BOMB
 
 class Bomb(Unit):
     offset = (0, 0)

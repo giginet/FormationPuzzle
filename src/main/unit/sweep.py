@@ -8,7 +8,7 @@ import settings
 from . import Unit
 from main.utils import LocalPoint
 from main.panel import DummyPanel
-from parameter import SWEEP
+from settings.parameter import SWEEP
 
 class Sweep(Unit):
     offset = (-1, -1)

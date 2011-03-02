@@ -5,7 +5,7 @@
 #
 from . import Unit
 from main.utils import LocalPoint
-from parameter import GUARD
+from settings.parameter import GUARD
 
 class Guard(Unit):
     offset = (-1, 0)

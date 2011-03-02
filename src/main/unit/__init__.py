@@ -4,7 +4,7 @@ from pywaz.utils.timer import Timer
 from pywaz.mixer.sound import Sound
 from main.effect import Effect
 
-from parameter import ATTACK
+from settings.parameter import ATTACK
 
 
 class Unit(object):

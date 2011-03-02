@@ -1,4 +1,4 @@
-#Tue Mar 01 23:03:59 JST 2011
+#Wed Mar 02 21:03:11 JST 2011
 eclipse.preferences.version=1
 encoding//src/main.py=utf-8
 encoding//src/main/effect.py=utf-8
@@ -15,7 +15,7 @@ encoding//src/main/unit/bomb.py=utf-8
 encoding//src/main/unit/guard.py=utf-8
 encoding//src/main/unit/sweep.py=utf-8
 encoding//src/main/unitmanager.py=utf-8
-encoding//src/parameter.py=utf-8
+encoding//src/pygame2exe.py=utf-8
 encoding//src/pywaz/core/game.py=utf-8
 encoding//src/pywaz/core/window.py=utf-8
 encoding//src/pywaz/device/joypad.py=utf-8
@@ -32,4 +32,5 @@ encoding//src/pywaz/utils/singleton.py=utf-8
 encoding//src/pywaz/utils/timer.py=utf-8
 encoding//src/scene/game.py=utf-8
 encoding//src/scene/menu.py=utf-8
-encoding//src/settings.py=utf-8
+encoding//src/settings/__init__.py=utf-8
+encoding//src/settings/parameter.py=utf-8
