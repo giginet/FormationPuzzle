@@ -21,7 +21,7 @@ while 1:
 ######
 #
 script = raw_input('Input starting script:')
-icon_file = '../resources/icon16.ico'
+icon_file = '../resources/icon/icon16.ico'
 optimize = 2
 extra_modules = ['pygame.locals']  
 

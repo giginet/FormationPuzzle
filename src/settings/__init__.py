@@ -14,4 +14,4 @@ FRAMERATE = FPS = 30
 ROTATE_SPEED = 5
 BACKGROUND = Image(u'../resources/image/main/background.png')
 TIME = 180
-CALLED = 0.75
+CALLED = 0.80

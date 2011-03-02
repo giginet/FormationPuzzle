@@ -3,6 +3,7 @@
 #    Created on 2011/02/11
 #    Created by giginet
 #
+import pygame
 class SceneManager(object):
     def __init__(self, scenes={}):
         self._scenes_dict = scenes
@@ -18,7 +19,8 @@ class SceneManager(object):
         if self._scenes_dict.has_key(key):
             if self.current_scene:  self.current_scene.finalize()
             self._current_scene = self._scenes_dict[key]
-            self.current_scene.ready(args, kwargs)
+            self.current_scene.ready(*args, **kwargs)
+            pygame.display.flip()
         
     @property
     def current_scene(self):

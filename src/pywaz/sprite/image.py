@@ -48,7 +48,7 @@ class Image(pygame.sprite.Sprite):
     def _resize(self, image, dest):
         if not self.xscale==1 or not self.yscale==1:
             before = Vector(self.image.get_size())
-            image = pygame.transform.scale(image, (self.xscale*self.rect.width, self.yscale*self.rect.height))
+            image = pygame.transform.scale(image, (int(self.xscale*self.rect.width), int(self.yscale*self.rect.height)))
             after = Vector(image.get_size())
             sub = (before-after)
             sub.x *= self.center.x/self.rect.w

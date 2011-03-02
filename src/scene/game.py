@@ -20,7 +20,7 @@ class GameScene(Scene):
     def ready(self, *args, **kwargs):
         self.background = settings.BACKGROUND
         self.frame = Image(u'../resources/image/main/frame.png', x=settings.STAGE_OFFSET[0]-15, y=settings.STAGE_OFFSET[1]-15)
-        self.stage = Stage(args[0][0], args[0][1])
+        self.stage = Stage(args[0], args[1])
         self.bgm = BGM(u'../resources/bgm/game_intro.wav', -1, u'../resources/bgm/game_loop.wav')
         self.background.draw()
         self.frame.draw()
@@ -35,6 +35,7 @@ class GameScene(Scene):
         self.sequence_mng.change_scene(init())
         self.redraw = False
         Effect.reset()
+        self.draw()
         
     def update(self):
         super(GameScene, self).update()

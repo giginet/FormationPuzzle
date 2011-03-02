@@ -74,7 +74,6 @@ class MainSequence(Scene, Singleton):
         if self.stage.count[0] > crisis or self.stage.count[1] > crisis: 
             if not self.crisis:
                 self.crisis = True
-                print "crisis!"
                 Sound(u'../resources/sound/area_crisis.wav').play()
         else: self.crisis = False
         u"""ゲーム終了判定"""
@@ -97,6 +96,7 @@ class ResultSequence(Scene, Singleton):
         self.bgm = BGM(u'../resources/bgm/result_intro.wav', -1, u'../resources/bgm/result_loop.wav')
         self.bgm.play()
         self.window.ready()
+        self.draw()
     
     def update(self):
         self.window.update()
@@ -104,7 +104,7 @@ class ResultSequence(Scene, Singleton):
     def draw(self):
         self.frame.draw()
         self.window.draw()
-        return []
+        return [Rect(0,0, 800, 600)]
 
 class PauseSequence(Scene, Singleton):
     def ready(self, *args, **kwargs):

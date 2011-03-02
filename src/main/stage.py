@@ -24,7 +24,7 @@ class Stage(Singleton):
     def __init__(self, bomb=False, cpu=True):
         self.bomb = bomb
         self.cpu = cpu
-        self.chips = OrderedUpdates()
+        self.panels = OrderedUpdates()
         self._map = []
         self.unitmng = UnitManager(self)
         self.unitmng.reset()
@@ -36,7 +36,7 @@ class Stage(Singleton):
                     owner = 1
                 panel = Panel(x, y, owner)
                 column.append(panel)
-                self.chips.add(panel)
+                self.panels.add(panel)
             self._map.append(column)
         self._map = map(list, zip(*self._map)) #transpose matrix
         if cpu:
@@ -45,8 +45,8 @@ class Stage(Singleton):
             self.players = OrderedUpdates(Player(0), Player(1))
         self.panelsets = [] #回転中のPanelSet
         self.count = [settings.STAGE_WIDTH*settings.STAGE_HEIGHT/2,settings.STAGE_WIDTH*settings.STAGE_HEIGHT/2]
-    
-        
+        self.draw()
+            
     def update(self):
         for player in self.players:
             player.update()
@@ -99,7 +99,7 @@ class Stage(Singleton):
 #        for x in xrange(settings.STAGE_WIDTH):
 #            for y in xrange(settings.STAGE_HEIGHT):
 #                self._map[x][y].draw()
-        update_rect += self.chips.draw(Game.get_screen())
+        update_rect += self.panels.draw(Game.get_screen())
         update_rect += self.unitmng.draw()
         update_rect += self.players.draw(Game.get_screen())
         #map(lambda u:u.draw(),self.players)

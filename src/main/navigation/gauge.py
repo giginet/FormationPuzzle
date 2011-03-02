@@ -42,20 +42,24 @@ class Gauge(object):
         u"""
             count tuple
         """
+        self.is_update = False
         self.proportion[0] = int(count[0]*100/self.CHIPS)
         self.proportion[1] = 100 - int(count[0]*100/self.CHIPS)
         if not self.proportion[0] == self.pre_proportion[0]:
+            self.is_update = True
             self.pre_proportion = list(self.proportion)
             self._parse()
         
     def draw(self, surface=Game.get_screen()):
+        #if not self.is_update: return []
+        dirty_rects = [] 
         for sprite, offset in zip(self.images, self.OFFSET):
             rect = sprite.get_rect().move(self.x+offset[0], self.y+offset[1])
-            surface.blit(settings.BACKGROUND.image, rect, rect)
+            dirty_rects.append(surface.blit(settings.BACKGROUND.image, rect, rect))
         for sprite, offset in zip(self.images, self.OFFSET):
             dest = sprite.get_rect().move(self.x+offset[0], self.y+offset[1])
-            surface.blit(sprite, dest)
-        return []
+            dirty_rects.append(surface.blit(sprite, dest))
+        return dirty_rects
         
     def _parse(self):
         for i,gauge in enumerate(self.gauges):

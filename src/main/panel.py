@@ -32,7 +32,7 @@ class Panel(Image):
         self.x = self.point.x*settings.PANELSIZE+settings.STAGE_OFFSET[0]
         self.y = self.point.y*settings.PANELSIZE+settings.STAGE_OFFSET[1]
         self.rect.x, self.rect.y = self.x, self.y
-        super(Panel, self).draw(surface)
+        return super(Panel, self).draw(surface)
     def update(self):
         if self.disable:
             self.disable_timer.tick()

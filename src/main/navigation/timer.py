@@ -29,12 +29,11 @@ class Timer(pygame.sprite.Sprite):
         self.pre_second = 0
         self.image = pygame.surface.Surface((70,396)).convert()
         self.image.set_colorkey((0,0,0))
+        self.is_update = True
         self._parse(self.convert_time())
     
     def draw(self, surface=Game.get_screen()):
-        surface.blit(self.image, self.image.get_rect().move(self.x, self.y))
-        return []
-        
+        return surface.blit(self.image, self.image.get_rect().move(self.x, self.y))
     def _parse(self, time):
         minute = time[0]
         second = time[1]
@@ -58,9 +57,11 @@ class Timer(pygame.sprite.Sprite):
         self.gauge.draw(self.image)
         
     def update(self):
+        self.is_update = False
         self.timer.tick()
         second = self.convert_time()[1]
         if not second == self.pre_second:
+            self.is_update = True
             self._parse(self.convert_time())        
     def play(self):
         self.timer.play()

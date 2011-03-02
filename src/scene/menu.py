@@ -22,10 +22,10 @@ class LogoScene(Scene):
         self.logo = Image("../resources/image/menu/kawaz.png", x=273, y=244, alpha=False)
         self.sprites.add(self.logo)
         self.timer = Timer(210)
-        self.timer.play()
         
     def update(self):
         self.timer.tick()
+        self.timer.play()
         if self.timer.is_over() or Mouse.is_press('LEFT'):
             Game.get_scene_manager().change_scene('title')
         elif self.timer.now < 60:
@@ -62,11 +62,11 @@ class TitleScene(Scene):
         self.sprites.add(Image(u'../resources/image/menu/background.png'),
                          self.logo,self.play,self.vs,self.hard,self.exit
         )
-        self.bgm.play()
         self.timer = Timer(60)
         self.timer.play()
         
     def update(self):
+        self.bgm.play()
         self.timer.tick()
         if self.timer.now < 15:
             self.logo.y = self.timer.now*10-70
