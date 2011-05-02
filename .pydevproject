@@ -7,4 +7,7 @@
 <pydev_pathproperty name="org.python.pydev.PROJECT_SOURCE_PATH">
 <path>/FormationPuzzle/src</path>
 </pydev_pathproperty>
+<pydev_pathproperty name="org.python.pydev.PROJECT_EXTERNAL_SOURCE_PATH">
+<path>/opt/local/Library/Frameworks/Python.framework/Versions/2.6/lib/python2.6</path>
+</pydev_pathproperty>
 </pydev_project>
