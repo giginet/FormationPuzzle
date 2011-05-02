@@ -22,11 +22,12 @@ ATTACK = {
           'effect':{'enable':True,
                     'appear':'../resources/effect/attack_appear.png',
                     'disappear':None,
-                    'offset':162,
+                    'offset':(162, 162),
                     'width':384,
-                    'height':384
+                    'height':384,
+                    'frame':40
             },
-          'delay':40
+          'delay':35
 }
 GUARD = {
           'hp':30,
@@ -36,14 +37,15 @@ GUARD = {
           'width':80,
           'height':20,
           'image':u'../resources/image/main/unit/guard.png',
-          'effect':{'enable':False,
-                    'appear':'../resources/image/main/unit/attack.png',
+          'effect':{'enable':True,
+                    'appear':'../resources/effect/guard_appear.png',
                     'disappear':None,
-                    'offset':162,
-                    'width':384,
-                    'height':384
+                    'offset':(10,40),
+                    'width':100,
+                    'height':100,
+                    'frame':80
             },
-          'delay':0
+          'delay':60
 }
 SWEEP = {
           'hp':1,
@@ -53,14 +55,15 @@ SWEEP = {
           'width':60,
           'height':60,
           'image':u'../resources/image/main/unit/sweep.png',
-          'effect':{'enable':False,
-                    'appear':'../resources/image/main/unit/attack.png',
+          'effect':{'enable':True,
+                    'appear':'../resources/effect/sweep_appear.png',
                     'disappear':None,
-                    'offset':162,
-                    'width':384,
-                    'height':384
+                    'offset':(34,34),
+                    'width':128,
+                    'height':128,
+                    'frame':40
             },
-          'delay':0
+          'delay':20
 }
 BOMB = {
           'hp':10,
@@ -70,12 +73,13 @@ BOMB = {
           'width':40,
           'height':40,
           'image':u'../resources/image/main/unit/bomb.png',
-          'effect':{'enable':False,
-                    'appear':'../resources/image/main/unit/attack.png',
+          'effect':{'enable':True,
+                    'appear':'../resources/effect/bomb_appear.png',
                     'disappear':None,
-                    'offset':162,
-                    'width':384,
-                    'height':384
+                    'offset':(12,12),
+                    'width':64,
+                    'height':64,
+                    'frame':80
             },
-          'delay':0
+          'delay':60
 }

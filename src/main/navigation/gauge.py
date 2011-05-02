@@ -55,7 +55,7 @@ class Gauge(object):
         dirty_rects = [] 
         for sprite, offset in zip(self.images, self.OFFSET):
             rect = sprite.get_rect().move(self.x+offset[0], self.y+offset[1])
-            dirty_rects.append(surface.blit(settings.BACKGROUND.image, rect, rect))
+            dirty_rects.append(surface.blit(Image(u'../resources/image/main/background.png').image, rect, rect))
         for sprite, offset in zip(self.images, self.OFFSET):
             dest = sprite.get_rect().move(self.x+offset[0], self.y+offset[1])
             dirty_rects.append(surface.blit(sprite, dest))
@@ -66,7 +66,7 @@ class Gauge(object):
             if i==1: gauge.yscale = float(self.proportion[i])/50
             gauge.draw(self.images[0])
         for i,number in enumerate(self.numbers):
-            self.images[i+1].blit(settings.BACKGROUND.image, number.image.get_rect(), 
+            self.images[i+1].blit(Image(u'../resources/image/main/background.png').image, number.image.get_rect(), 
                                 number.image.get_rect())
             number.n = self.proportion[i]
             number.draw(self.images[i+1])

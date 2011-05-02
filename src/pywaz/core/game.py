@@ -4,6 +4,7 @@
 #    Created by giginet
 #
 import pygame
+import settings
 from pygame.locals import *
 
 from ..utils.singleton import Singleton
@@ -14,7 +15,7 @@ from ..device.key import Key
 class Game(Singleton):
     _clock = pygame.time.Clock()
     _scene_manager = SceneManager()
-    _screen = Window(width=800, height=600, caption=u"Hello,Kawaz!")
+    _screen = Window(width=settings.SCREENWIDTH, height=settings.SCREENHEIGHT, caption=settings.SCREENCAPTION)
         
     @classmethod
     def get_screen(cls):

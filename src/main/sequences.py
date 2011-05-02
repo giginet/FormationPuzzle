@@ -64,9 +64,9 @@ class MainSequence(Scene, Singleton):
         self.stage.update()
         self.navigation.update()
         u"""ポーズへの移行"""
-        if not Key.is_press(K_RETURN):
+        if not Key.is_press(K_SPACE):
             self.press_pause = False
-        if not self.press_pause and Key.is_press(K_RETURN): 
+        if not self.press_pause and Key.is_press(K_SPACE): 
             Sound(u'../resources/sound/pause.wav').play()
             return 'pause'
         u"""リミットの9割に達したとき、音を鳴らす"""
@@ -126,9 +126,9 @@ class PauseSequence(Scene, Singleton):
         
     def update(self):
         self.navigation.gauge.is_update = True
-        if not Key.is_press(K_RETURN):
+        if not Key.is_press(K_SPACE):
             self.press = False
-        if not self.press and Key.is_press(K_RETURN):
+        if not self.press and Key.is_press(K_SPACE):
             Sound(u'../resources/sound/pause.wav').play()
             BGM.set_volume(1)
             return 'main'

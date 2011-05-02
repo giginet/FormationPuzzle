@@ -5,6 +5,7 @@ from pywaz.utils.timer import Timer
 from pywaz.mixer.sound import Sound
 from main.effect import Effect
 
+import settings
 from settings.parameter import ATTACK
 
 
@@ -27,14 +28,16 @@ class Unit(object):
         self.limit = self.parameter['limit']
         self.count = 0
         self.timer = Timer(self.parameter['frequency'])
-        self.delay = Timer(self.parameter['delay'])
-        self.delay.play()
         appear_sound = Sound(u'../resources/sound/appear.wav')
         appear_sound.play()
         self.image.x, self.image.y = (self.panels[0].point + LocalPoint(self.offset)).to_global().to_pos()
-        if self.parameter['effect']['enable']:
+        self.delay = Timer()
+        if self.parameter['effect']['enable'] and settings.EFFECTENABLE:
             ef = self.parameter['effect']
-            Effect(ef['appear'], AnimationInfo(0,0,self.parameter['delay'],ef['width'],ef['height'],1), x=self.image.x-ef['offset'], y=self.image.y-ef['offset'])
+            Effect(ef['appear'], AnimationInfo(0,0,ef['frame'],ef['width'],ef['height'],1), x=self.image.x-ef['offset'][0], y=self.image.y-ef['offset'][1])
+            self.delay.set(self.parameter['delay'])
+        self.delay.play()
+        
     
     @classmethod
     def generate(cls, panels, map):

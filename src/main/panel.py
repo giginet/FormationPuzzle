@@ -27,18 +27,16 @@ class Panel(Image):
         self.color = random.randint(0,3)
         self.owner = owner
         self.disable_timer = Timer(120)
+        self.redraw = True
         super(Panel,self).__init__("../resources/image/main/panel/panel%d_%d.png" % (owner, self.color), x=x*settings.PANELSIZE+settings.STAGE_OFFSET[0], y=y*settings.PANELSIZE+settings.STAGE_OFFSET[1])
     def __eq__(self, p): return self.point == p.point
-    def draw(self, surface=Game.get_screen()):
-        self.x = self.point.x*settings.PANELSIZE+settings.STAGE_OFFSET[0]
-        self.y = self.point.y*settings.PANELSIZE+settings.STAGE_OFFSET[1]
-        self.rect.x, self.rect.y = self.x, self.y
-        return super(Panel, self).draw(surface)
     def update(self):
         if self.disable:
             self.disable_timer.tick()
             if self.disable_timer.is_over():
                 self.set_disable(False)
+        self.x = self.point.x*settings.PANELSIZE+settings.STAGE_OFFSET[0]
+        self.y = self.point.y*settings.PANELSIZE+settings.STAGE_OFFSET[1]
         return False
     def get_point(self): return self.point
     def can_unit(self): return not self.rotation and not self.disable and not self.unit
@@ -60,7 +58,7 @@ class Panel(Image):
             self.disable = disable
             if disable:
                 self.disable_timer.play()
-                Effect(u'../resources/effect/disable.png', AnimationInfo(0,0,60,64,64,1), x=self.x-22, y=self.y-22)
+                if settings.EFFECTENABLE: Effect(u'../resources/effect/disable.png', AnimationInfo(0,0,60,64,64,1), x=self.x-22, y=self.y-22)
                 self.change_image(u"../resources/image/main/panel/disable.png")
             else:
                 self.disable_timer.stop()

@@ -36,7 +36,7 @@ class Number(Sprite):
         self.image.set_colorkey((0,0,0))
         dest = self.image.get_rect().move(self.x, self.y)
         area = dest
-        self.image.blit(settings.BACKGROUND.image, dest, area)
+        self.image.blit(Image(u'../resources/image/main/background.png').image, dest, area)
         for i,s in enumerate(str(self.n)):
             n = int(s)
             image = Image(self.filepath)

@@ -68,8 +68,12 @@ class UnitManager(Singleton):
         for panel in a.panels:
             next = self.stage.get_panel(panel.point+v)
             if not a.owner == next.owner and next.unit:
-                y = [-32,-12]
-                Effect(u'../resources/effect/battle.png', AnimationInfo(0,0,40,64,64,1), x=next.x+settings.PANELSIZE/2-32, y=panel.y+y[a.owner])
+                if v.x == 0:
+                    y = [-32, -12]
+                    Effect(u'../resources/effect/spark_horizonal.png', AnimationInfo(0,0,10,64,64,1), x=next.x+settings.PANELSIZE/2-32, y=panel.y+y[(v.y+1)/2])
+                else:
+                    x = [-32, -12]
+                    Effect(u'../resources/effect/spark_vertical.png', AnimationInfo(0,0,10,64,64,1), x=panel.x+x[(v.x+1)/2], y=panel.y-(64-settings.PANELSIZE)/2)
         
     def draw(self):
         rects = []

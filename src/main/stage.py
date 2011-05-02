@@ -11,6 +11,7 @@ from pywaz.utils.singleton import Singleton
 from pywaz.sprite.image import Image
 from pywaz.core.game import Game
 from pywaz.sprite import OrderedUpdates
+from pywaz.device.joypad import JoyPad
 
 from main.player import Player, NPC
 from main.panel import Panel, PanelSet, DummyPanel
@@ -40,7 +41,9 @@ class Stage(Singleton):
             self._map.append(column)
         self._map = map(list, zip(*self._map)) #transpose matrix
         if cpu:
-            self.players = OrderedUpdates(Player(0, ('mouse', 'key')), NPC(1))
+            interfaces = ['mouse', 'key']
+            if JoyPad().get_count(): interfaces.append('pad')
+            self.players = OrderedUpdates(Player(0, interfaces), NPC(1))
         else:
             self.players = OrderedUpdates(Player(0), Player(1))
         self.panelsets = [] #回転中のPanelSet
@@ -63,7 +66,8 @@ class Stage(Singleton):
         for i,ps in enumerate(self.panelsets):
             if ps.is_over():
                 self.rotate(ps.panels, ps.degree)
-                for panel in ps.panels: 
+                panel = ps.panels[0]
+                for panel in ps.panels:
                     panel.rotation = False
                     self.unitmng.check(panel)
                 del self.panelsets[i]
@@ -102,7 +106,6 @@ class Stage(Singleton):
         update_rect += self.panels.draw(Game.get_screen())
         update_rect += self.unitmng.draw()
         update_rect += self.players.draw(Game.get_screen())
-        #map(lambda u:u.draw(),self.players)
         update_rect += Effect.effects.draw(Game.get_screen())
         return update_rect
         

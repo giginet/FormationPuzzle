@@ -38,6 +38,10 @@ class Player(Image):
         
     def set_type(self):
         count = self.joy.get_count()
+        r = count
+        for id in xrange(r):
+            if self.joy.sticks[id].get_numbuttons < 6:
+                count -=1
         if count == 0:
             types = ('mouse','key')
         elif count == 1:
@@ -74,24 +78,30 @@ class Player(Image):
         if 'pad' in self.interfaces:
             if self.joy.get_count() == 1: id = 0
             else: id = self.number
-            if self.joy.sticks[id].get_button(14):
+            axes = self.joy.sticks[id].get_numaxes() >= 2
+            pad = self.joy.sticks[id]
+            if pad.get_button(0) or (axes and pad.get_axis(1) < -0.5):
                 self.press_counter[0] += 1
-            elif self.joy.sticks[id].get_button(11):
+                self.key_mode = True
+            if pad.get_button(1) or (axes and pad.get_axis(1) > 0.5):
                 self.press_counter[1] += 1
-            if self.joy.sticks[id].get_button(13):
+                self.key_mode = True
+            if pad.get_button(2) or (axes and pad.get_axis(0) < -0.5):
                 self.press_counter[2] += 1
-            elif JoyPad.sticks[id].get_button(12):
+                self.key_mode = True
+            if pad.get_button(3) or (axes and pad.get_axis(0) > 0.5):
                 self.press_counter[3] += 1
-        if self.press_counter[0] > 1:
+                self.key_mode = True
+        if self.press_counter[0] > 2:
             self.press_counter[0] = 0
             self.point.y -= 1
-        if self.press_counter[1] > 1:
+        if self.press_counter[1] > 2:
             self.press_counter[1] = 0
             self.point.y += 1
-        if self.press_counter[2] > 1:
+        if self.press_counter[2] > 2:
             self.press_counter[2] = 0
             self.point.x -= 1
-        if self.press_counter[3] > 1:
+        if self.press_counter[3] > 2:
             self.press_counter[3] = 0
             self.point.x += 1
         if self.point.x < 0: self.point.x = 0
@@ -127,6 +137,27 @@ class Player(Image):
                 if not self.press_counter[5]: 
                     self.press_counter[5] = 1
                     self.key_mode = True
+                    return 1
+            else:
+                self.press_counter[4] = 0
+                self.press_counter[5] = 0
+        if 'pad' in self.interfaces:
+            if self.joy.get_count() == 1: id = 0
+            else: id = self.number
+            if self.joy.sticks[id].get_numbuttons >= 13:
+                left = 12
+                right = 11
+            else:
+                left = 5
+                right = 6
+            pad = self.joy.sticks[id]
+            if pad.get_button(left):
+                if not self.press_counter[4]:
+                    self.press_counter[4] = 1
+                    return -1
+            elif pad.get_button(right):
+                if not self.press_counter[5]: 
+                    self.press_counter[5] = 1
                     return 1
             else:
                 self.press_counter[4] = 0

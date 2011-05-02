@@ -21,14 +21,14 @@ while 1:
 ######
 #
 script = raw_input('Input starting script:')
-icon_file = '../resources/icon/icon16.ico'
+icon_file = '../resources/icon/icon.ico'
 optimize = 2
 extra_modules = ['pygame.locals']  
 
 ###
 project_name = 'FormationPuzzle'
 description = u'新感覚アクションパズル！' 
-version = "0.9.0"              
+version = "1.1.1"              
 company_name = "www.kawaz.org"
 copy_right = "Kawaz"
 pj_name = "FormationPuzzle"

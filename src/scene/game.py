@@ -18,7 +18,7 @@ from main.effect import Effect
 
 class GameScene(Scene):
     def ready(self, *args, **kwargs):
-        self.background = settings.BACKGROUND
+        self.background = Image(u'../resources/image/main/background.png')
         self.frame = Image(u'../resources/image/main/frame.png', x=settings.STAGE_OFFSET[0]-15, y=settings.STAGE_OFFSET[1]-15)
         self.stage = Stage(args[0], args[1])
         self.bgm = BGM(u'../resources/bgm/game_intro.wav', -1, u'../resources/bgm/game_loop.wav')

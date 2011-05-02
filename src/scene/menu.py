@@ -19,7 +19,9 @@ class LogoScene(Scene):
     BACKGROUND = (255,255,255)
     def ready(self, *args, **kwargs):
         super(LogoScene, self).ready()
-        self.logo = Image("../resources/image/menu/kawaz.png", x=273, y=244, alpha=False)
+        self.background = Image("../resources/image/menu/whiteback.png", alpha=False)
+        self.logo = Image("../resources/image/menu/kawaz-full.png", alpha=False)
+        self.sprites.add(self.background)
         self.sprites.add(self.logo)
         self.timer = Timer(210)
         
